@@ -10,7 +10,11 @@
 
     .. class:: title
 
-       12 years of Pylint   
+       **12 years of Pylint**
+       
+           or
+
+       *How I Learned to Stop Worrying and Love the bugs*
 
     |
     |
@@ -47,7 +51,7 @@ What is this *lint* you're talking about?
   
   * a linter, looking for suspicious code
   
-  * a type checker and structural analyser
+  * a type checker and structural analyzer
 
 -------
 
@@ -593,39 +597,40 @@ Astroid capabilities
 ====================
 
 .. sourcecode:: python
+   :linenos:
 
-  class A(object):
-    def spam(self): return "A"
-    foo = 42
-    @staticmethod
-    def static(arg): print(arg)
+    class A(object):
+       def spam(self): return "A"
+       foo = 42
 
-   class B(A):
-    def boo(self, a): print(a)
+    class B(A):
+       def boo(self, a): print(a)
 
-   class C(A):
-    def boo(self, a, b): print(a, b)
+    class C(A):
+       def boo(self, a, b): print(a, b)
 
-   class E(C, B):
-    def __init__(self):
-        super(E, self).boo(4, 5) 
-        super(C, self).boo(5, 6)
-        super(E, self).foo()
-        super(E, self).static()
-        super(E, self).spa
+    class E(C, B):
+       def __init__(self):
+          super(E, self).boo(4, 5) 
+          super(C, self).boo(5, 6)
+          super(E, self).foo()
+          super(E, self).spa
 
 ----
 
 Astroid capabilities
 ====================
 
-.. sourcecode:: python
+* Since astroid knows how super works and understands
+  the method resolution order, pylint can detect the errors
+  from the previous code
 
-    $ pylint a.py ...
-    E: 16,26: Too many positional arguments for method call
-    E: 17,26: super(E, self).foo is not callable
-    E: 18,29: No value for argument 'arg' in staticmethod call
-    E: 19,23: Super of 'E' has no 'spa' member
+  .. sourcecode:: python
+
+     $ pylint a.py ...
+     E: 14,26: Too many positional arguments for method call
+     E: 15,26: super(E, self).foo is not callable
+     E: 16,23: Super of 'E' has no 'spa' member
 
 -----
 
@@ -634,8 +639,6 @@ Astroid capabilities
 
 .. sourcecode:: python
 
-   import contextlib
- 
    def real_func():
       pass
 
@@ -644,10 +647,9 @@ Astroid capabilities
       def meth(self):
          yield real_func
 
-   classes = [A()]
-   a = classes[0]
+   a = [A(), 1, 2, 3][0]
    meth = hasattr(a, 'meth') and callable(a.meth) and getattr(a, 'meth')
-   with meth(42) as foo:
+   with meth() as foo:
        foo('EuroPython is great')   
 
    $ pylint a.py ...
@@ -691,7 +693,7 @@ Pylint - checkers
 Pylint
 ======
 
-* comes with a lot of goodies and it has a vibrant ecosystem:
+* comes with a lot of goodies and it has a vibrant ecosystem
 
 * you can write your own checker, even though that implies some knowledge of Python and how pylint works
 
@@ -702,7 +704,7 @@ Pylint
 
   .. code-block:: python
 
-     $ pylint a.py --load-plugins=plugin a.py
+     $ pylint --load-plugins=plugin a.py
 
 -----
 
@@ -747,12 +749,11 @@ Pylint
 
 * Also recommended by the official HowTo porting guide: https://docs.python.org/3/howto/pyporting.html
 
-* detects
+* can detect:
 
   * using removed syntax: print statement, old raise form, parameter unpacking
   * using removed builtins: apply, cmp, execfile etc
   * using removed special methods: __coerce__, __delslice__ etc
-  * assigning to __metaclass__ attribute
   * using map / filter / reduce in non iterating context
 
 -----
@@ -762,22 +763,17 @@ Pylint - Python 3 porting checker
 
 .. code-block:: sh
 
-    def func(op):
-        # do some serious operation with op
+    def download_url(url):
+        ...
 
-    # Not evaluating, func will never be called
-    map(func, entries)   
-
-    print 'lala'
-    b =basestring()
-    f = cmp(2, 3, 4)
+    # Not evaluating, *download_url* will never be called
+    map(download_url, urls)   
 
     class A:
         __metaclass__ = type
         def __setslice__(self, other):
-            pass
-
-    raise Exception, "lala"
+           if not isinstance(other, basestring):           
+               raise ValueError, "invalid slice type"
 
 ------
 
@@ -789,12 +785,10 @@ Pylint - Python 3 porting checker
   $ pylint a.py --py3k
 
   W:  5, 0: map built-in referenced when not iterating
-  E:  7, 0: print statement used
-  W:  8, 3: basestring built-in referenced
-  W:  9, 4: cmp built-in referenced
-  W: 11, 0: Assigning to a class' __metaclass__ attribute
-  W: 13, 8: __setslice__ method defined
-  E: 16, 0: Use raise ErrorClass(args) instead of raise ErrorClass, args.
+  W:  7, 0: Assigning to a class's __metaclass__ attribute
+  W:  9, 8: __setslice__ method defined
+  W: 10,36: basestring built-in referenced
+  E: 11,15: Use raise ErrorClass(args) instead of raise ErrorClass, args
 
 ----
 
@@ -804,6 +798,9 @@ Similar tools: pyflakes
  
 
 * pyflakes: lightweight, fast, but detects only handful of errors
+
+* promises not to have false positives or to warn about
+  style issues
 
    .. code-block:: python
 
@@ -826,7 +823,7 @@ Similar tools: Pychecker
   
 * pychecker: forefather of Pylint, not really static, ahead of its time, now dead
 
-* still detects issues that most of static analysers don't detect
+* still detects issues that most of static analyzers don't detect
 
    .. code-block:: python
 
@@ -842,14 +839,15 @@ Similar tools: Pychecker
 Similar tools: jedi and mypy
 ============================
 
-* jedi: autocompletion library, wants to be a static analyser, a lot of hardcoded behaviour
+* jedi: autocompletion library, wants to be a static analyzer, a lot of hardcoded behaviour
 
    .. code-block:: python
 
        $ python -m jedi linter a.py
        $ # it detected nothing :(
 
-* mypy: cool, Guido loves it, PEP 484 started from here. The real competitor of pylint.
+* mypy: optional type checker, with support for type hints through annotations,
+  Guido loves it, PEP 484 started from here. Still work in progress.
 
    .. code-block:: python
 
@@ -862,7 +860,9 @@ Similar tools: jedi and mypy
 Static analysis shortcomings
 ============================
 
-* you can't fully understand code when
+* static analysis is great
+
+* but you can't fully understand code when:
 
    * dynamic code is invoked
 
@@ -870,30 +870,32 @@ Static analysis shortcomings
 
    * you don't understand flow control
 
-   * the code you're supposed to understand is too smart.
+   * the code you're supposed to understand is too **smart** (namedtuple, enum, six.moves)
 
 --------------
 
 Static analysis shortcomings
 ============================
 
-* nose
+* Some users actually expect static analysis tools to understand this kind of code
 
-  .. code-block:: python
+  * nose.trivial
 
-     for at in [ at for at in dir(_t)
-                if at.startswith('assert') and not '_' in at ]:
-       pepd = pep8(at)
-       vars()[pepd] = getattr(_t, at)
-       __all__.append(pepd)
+     .. code-block:: python
 
-* multiprocessing
+        for at in [ at for at in dir(_t)
+                   if at.startswith('assert') and not '_' in at ]:
+          pepd = pep8(at)
+          vars()[pepd] = getattr(_t, at)
+          __all__.append(pepd)
 
-  .. code-block:: python
+  * multiprocessing
 
-     globals().update((name, getattr(context._default_context, name))
-                       for name in context._default_context.__all__)
-      __all__ = context._default_context.__all__ 
+     .. code-block:: python
+
+        globals().update(
+           (name, getattr(context._default_context, name))
+           for name in context._default_context.__all__)
    
 -------
 
@@ -915,9 +917,22 @@ Future Pylint
 
 ---------
 
+But, but.. how do I stop worrying and start loving the bugs?
+============================================================
+
+* write as many tests as you can, there is no such thing as **too many tests**
+
+* use static analysis tools, any tool is better than nothing
+
+* hopefully, you're going to use Pylint ;-)
+
+
+--------
+
+
 .. class:: center
 
     .. class:: title
 
-    Thank you!
+    **Thank you!**
 
