@@ -96,19 +96,25 @@ Pylinting ugly code goes like this
 Pylint can detect real bugs too
 ===============================
 
-.. sourcecode:: python
+* using undefined variables
 
-   $ cat a.py
+* accessing undefined members
 
-   import zipfile
-   f = zipfile.ZipFile(outfile, 'w', zipfile.DEFLATED)
-   f()
+* calling non-callable objects
+
+   .. sourcecode:: python
+
+      $ cat a.py
+
+      import zipfile
+      f = zipfile.ZipFile(outfile, 'w', zipfile.DEFLATED)
+      f()
    
-   $ pylint a.py
+      $ pylint a.py
    
-   E:  2,20: Undefined variable 'outfile' (undefined-variable)
-   E:  2,42: Module 'zipfile' has no 'DEFLATED' member (no-member)
-   E:  3, 1: f is not callable (not-callable)
+      E:  2,20: Undefined variable 'outfile' (undefined-variable)
+      E:  2,42: Module 'zipfile' has no 'DEFLATED' member (no-member)
+      E:  3, 1: f is not callable (not-callable)
 
 -----
 
@@ -116,22 +122,23 @@ Pylint can detect real bugs too
 Pylint can detect real bugs too
 ===============================
 
+* special methods implemented incorrectly
 
-.. sourcecode:: python
+   .. sourcecode:: python
 
-   $ cat a.py
+      $ cat a.py
     
-   class MyContextManager(object):
-       def __enter__(self):
-          pass
+      class MyContextManager(object):
+          def __enter__(self):
+              pass
             
-   # It needs three arguments      
-   def __exit__(self):
-      pass
+          # It needs three arguments      
+          def __exit__(self):
+              pass
                 
-   $ pylint a.py
+      $ pylint a.py
 
-   E:  6, 6: The special method '__exit__' expects 3 param(s), 0 was given
+      E: The special method '__exit__' expects 3 params, 0 was given
    
 -----
 
@@ -139,21 +146,22 @@ Pylint can detect real bugs too
 Pylint can detect real bugs too
 ===============================
 
+* constant if conditions
 
-.. code-block:: python
+    .. code-block:: python
 
-    $ cat a.py
-    
-    def func():
-       return bool(some_condition)
+       $ cat a.py
+     
+       def func():
+           return bool(some_condition)
        
-    # func is always true   
-    if func:
-       pass
+       # func is always true   
+       if func:
+           pass
            
-    $ pylint a.py
+       $ pylint a.py
 
-    W:  5, 0: Using a conditional statement with a constant value
+       W:  5: Using a conditional statement with a constant value
 
 ------
 
@@ -167,7 +175,7 @@ Pylint can detect real bugs too
    .. sourcecode:: python
 
        def bad_case2():
-           return [lambda: i for i in range(10)]
+           return [(lambda: i) for i in range(10)]
 
        for callable in bad_case2():
            print(callable())
@@ -181,8 +189,6 @@ Pylint can detect real bugs too
 
 * actually no:
 
-.. class:: center
-
    .. sourcecode:: python
   
       $ python a.py
@@ -194,7 +200,10 @@ Pylint can detect real bugs too
       $ pylint a.py
       W:  2,20: Cell variable i defined in loop
 
-* the previous code was wrong, it was creating a lexical bounded closure (TODO)
+* the previous code created a closure and i was looked up
+  in the parent's scope when executed.
+
+* **i** in the parent's scope after the loop was 9.
 
 
 ------
@@ -207,9 +216,11 @@ Pylint can detect real bugs too
 
 * one of the oldest (maintained) static analysis tool
 * created by Logilab (Sylvain Thenault) in 2003
-* Google uses its own version internally
+* Google uses its own version internally: gpylint
+* over 35000 lines of code + tests, according to ohloh.net
 
-* TODO: more info here
+   * pylint: 2416 commits, 21536 lines of code
+   * astroid: 1604 commits, 14045 lines of code
 
 ----
 
@@ -222,26 +233,6 @@ Pylint's new life
 * Maintainer since Pylint 1.2 - 2014
 * The only active maintainer since Pylint 1.3 - 2014
 * Pylint 2.0 in 2016
-
-------
-
-Pylint's new life
-=================
-
-* over 35000 lines of code + tests
-   
-* Pylint stats:
-
-  * 2416 commits
-  * 108 contributors
-  * 21536 lines of codes
-
-* Astroid stats:
-
-  * 1604 commits
-  * 47 contributors
-  * 14045 lines of code
-
 
 ----
 
@@ -305,6 +296,8 @@ How pylint works?
 
 * astroid strives to be a compatibile layer that between various new versions of **ast**
 
+* it has a similar API with the **ast** module
+
   .. sourcecode:: python
 
      from astroid import parse
@@ -325,11 +318,11 @@ Astroid nodes
 
   * `Function` - function definition
 
-  * `Yield` - the yield statement
+  * `Class` - a class definition
 
   * `Arguments` - a function's arguments
 
-  * TODO explain them better and add new nodes
+  * etc
 
 ------
 
@@ -354,13 +347,42 @@ Astroid nodes
 Astroid nodes
 =============
 
-* TODO: more examples of scopes    	
+* you can get the children of a node
+
+  .. sourcecode:: python
+
+
+       >>> node = extract_node('''
+           def test():
+              europython = 1
+              foo = 42
+           ''')
+       >>> list(node.get_children())
+       [<Arguments() l.2 [] at 0x2bb2114208>,
+        <Assign() l.3 [] at 0x2bb2114278>,
+        <Assign() l.4 [] at 0x2bb2114320>]
+
+----
+
+Astroid nodes
+=============
+
 * you can get a node's lexical scope
 
     .. sourcecode:: python
-   
+
+       >>> node = extract_node('a = 1')
        >>> node.scope()
        <Module() l.0 [] at 0x2c49d90>
+       >>> node = extract_node('''
+           def test():
+               foo = 42 #@
+           ''')
+       >>> node.scope()
+       <Function(test) l.2 [] at 0x2bfbf10>
+       >>> node = extract_node("[__(i) for i in range(10)]")
+       >>> node.scope()
+       <ListComp() l.2 [] at 0x795684240>
    
 ----
 
@@ -406,14 +428,24 @@ Astroid nodes
 Astroid nodes
 =============
 
-* some nodes are augmented with capabilities tailored for them
+* getting a class's slots
 
-  >>> klass.slots()
-  [<Const(str) l.4 [] at ...>, <Const(str) l.4 [] at ...>]
-  >>> klass.getattr('version')
-  [<AssName(version) l.5 [] at 0xb990e81d30>]
-  >>> klass.metaclass()
-  <Class(ABCMeta) l.109 [abc] at 0x9cfd5e6470>
+  .. sourcecode:: python
+
+     >>> klass.slots()
+     [<Const(str) l.4 [] at ...>, <Const(str) l.4 [] at ...>]
+
+* getting a class's metaclass
+
+  .. sourcecode:: python
+
+      >>> klass.metaclass()
+      <Class(ABCMeta) l.109 [abc] at 0x9cfd5e6470>
+
+* getting a class's method resolution order
+
+  .. sourcecode:: python
+
   >>> klass.mro()
   [<Class(OmgMetaclasses) l.8 [] at ...>,
    <Class(OrderedDict) l.43 [collections] at ...>,
@@ -435,14 +467,14 @@ Astroid nodes - inference
 
 * each node type provides its own inference rules, according to Python's semantics
 
-* the inferrence also does partial abstract interpretation
+* the inference also does partial abstract interpretation
 
   * we evaluate what the side effect of a statement will actually be
 
 ----
 
-Astroid nodes - inference
-=========================
+Astroid nodes - inference example
+=================================
 
 .. sourcecode:: python
 
@@ -463,14 +495,11 @@ Astroid nodes - inference
 
 ----
 
-Astroid nodes - inference
-=========================
-
-* TODO: too big
+Astroid nodes - inference example
+=================================
 
 .. sourcecode:: python
 
-  n = extract_node('''
   class A(object):
       def __init__(self):
           self.foo = 42
@@ -481,7 +510,6 @@ Astroid nodes - inference
           self.bar = 24
       def __radd__(self, other): return NotImplemented
   A() + B()
-  ''')
   
   >>> n
   <BinOp() l.12 [] at 0x66d4e9ce80>
@@ -502,19 +530,25 @@ Astroid nodes - transforms
 
 * we already use this API for understanding namedtuples, enums, six.moves etc.
 
-* TODO: too big, move to other slide and explain the transform
+------
+
+Astroid nodes - transforms
+==========================
+
+* the transform is a function that receives a node and
+  returns the same node modified or a completely new node
+
+* they need to be registered using an internal manager
 
   .. sourcecode:: python
 
-     from astroid import MANAGER
-     from astroid import nodes
-
      def transform_six_add_metaclass(node):
-        # Modify the node or return a new node
         ...
 
      MANAGER.register_transform(nodes.Class, transform_six_add_metaclass,
                                 looks_like_six_add_metaclass)
+
+* you can filter the nodes you want to be transformed by using a filter function
 
 -----
 
@@ -539,27 +573,19 @@ Astroid nodes - inference tips
 Astroid capabilities
 ====================
 
-* good inference improves the linter.
+* having good inference improves the linter.
 
 * We understand:
 
-  * super
+  * super, the method resolution order of your classes
 
-  * the method resolution order of your classes
+  * isinstance, issubclass, getattr, hasattr, type
 
-  * getattr / hasattr
-
-  * isinstance / issubclass / type
-
-  * other builtins
-
-  * binary arithmetic operations, logical operators
+  * binary arithmetic operations, logical operators, comparisons
 
   * context managers
 
-  * list / tuple / dict indexing
-
-  * etc
+  * list, dict, tuple, string indexing and slicing
 
 -----
 
@@ -674,9 +700,9 @@ Pylint
 
 * run your checker as this:
 
-.. code-block:: python
+  .. code-block:: python
 
-  $ pylint a.py --load-plugins=plugin a.py
+     $ pylint a.py --load-plugins=plugin a.py
 
 -----
 
@@ -703,13 +729,13 @@ Pylint - Spellchecking
 * spell check your comments and docstrings (needs python-enchant to be installed)
 
 
-.. code-block:: python
+   .. code-block:: python
    
-   $ pylint --spelling-dict=en_US a.py
-   C:  1, 0: Wrong spelling of a word 'speling' in a docstring:
-   Verify that the speling cheker work as expcted.
-                   ^^^^^^^
-   Did you mean: 'spieling' or 'spelling' or 'spewing' or 'spelunking'?
+      $ pylint --spelling-dict=en_US a.py
+      C:  1, 0: Wrong spelling of a word 'speling' in a docstring:
+      Verify that the speling cheker work as expcted.
+                      ^^^^^^^
+      Did you mean: 'spieling' or 'spelling' or 'spelunking'?
 
 --------------
 
@@ -779,19 +805,19 @@ Similar tools: pyflakes
 
 * pyflakes: lightweight, fast, but detects only handful of errors
 
-.. code-block:: python
+   .. code-block:: python
 
-   def test():
-       a, b = [1, 2, 3] # unbalanced tuple unpacking
-       try:
-           if None: # constant check
+       def test():
+           a, b = [1, 2, 3] # unbalanced tuple unpacking
+           try:
+               if None: # constant check
+                   pass
+           except True: # catching non exception
                pass
-       except True: # catching non exception
-           pass
 
-   $ pyflakes a.py
-   a.py:2: local variable 'a' is assigned to but never used
-   a.py:2: local variable 'b' is assigned to but never used   
+      $ pyflakes a.py
+      a.py:2: local variable 'a' is assigned to but never used
+      a.py:2: local variable 'b' is assigned to but never used   
 
 -----
 
@@ -802,13 +828,13 @@ Similar tools: Pychecker
 
 * still detects issues that most of static analysers don't detect
 
-.. code-block:: python
+   .. code-block:: python
 
-   $ pychecker a.py
-
-   a.py:2: Unpacking 3 values into 2 variables
-   a.py:4: Using a conditional statement with a constant value (None)
-   a.py:6: Catching a non-Exception object (True)
+      $ pychecker a.py
+   
+      a.py:2: Unpacking 3 values into 2 variables
+      a.py:4: Using a conditional statement with a constant value
+      a.py:6: Catching a non-Exception object (True)
 
 -------
 
@@ -818,18 +844,18 @@ Similar tools: jedi and mypy
 
 * jedi: autocompletion library, wants to be a static analyser, a lot of hardcoded behaviour
 
-.. code-block:: python
+   .. code-block:: python
 
-   $ python -m jedi linter a.py
-   $ # it detected nothing :(
+       $ python -m jedi linter a.py
+       $ # it detected nothing :(
 
 * mypy: cool, Guido loves it, PEP 484 started from here. The real competitor of pylint.
 
-.. code-block:: python
+   .. code-block:: python
 
-   $ mypy a.py
-   a.py: In function "test":
-   a.py, line 2: Too many values to unpack (2 expected, 3 provided)
+     $ mypy a.py
+     a.py: In function "test":
+     a.py,line 2: Too many values to unpack (2 expected, 3 provided)
    
 ------
 
@@ -876,7 +902,7 @@ Future Pylint
 
 * converges towards Pylint 2.0
 
-* full flowcontrol analysis
+* full flow control analysis
 
 * a better data model (undestanding descriptors, proper attribute access logic)
 
