@@ -43,7 +43,7 @@ What is this *lint* you're talking about?
 
 * lint is a program which analyses your code, looking for errors.
 
-* you can use it as a verb: ``Imma gonna lint your code``
+* you can use it as a verb: ``I'm gonna lint your code``
 
 * **Pylint** is more than a linter though:
 
@@ -60,40 +60,27 @@ Pylinting ugly code goes like this
 ==================================
 
 .. code-block:: python
+   :linenos:
 
-    import os, sys
-    from csv import reader
+   import os
 
-    def double(x ):
-        return (x  
-                   + x)
-
-    def square(x):
-        return x*x
-
-----
-
-
-Pylinting ugly code goes like this
-==================================
+   def process_stuff(params):
+      executed = False
+      if not params:
+         raise ValueError('empty command list')
+         # I didn't intended to put this here.
+         for i in params:
+            # Oups, forgot to call it
+            i.execute
 
 .. code-block:: sh
 
     $ pylint a.py
 
-    C:  4, 0: No space allowed before bracket
-    def double(x ):
-                 ^ (bad-whitespace)
-    C:  5, 0: Trailing whitespace (trailing-whitespace)
-    C:  6, 0: Wrong continued indentation (remove 3 spaces).
-                   + x)
-                |  ^ (bad-continuation)
-    C:  4, 0: Invalid argument name "x" (invalid-name)
-    C:  4, 0: Missing function docstring (missing-docstring)
-    C:  8, 0: Invalid argument name "x" (invalid-name)
-    W:  1, 0: Unused import os (unused-import)
-    W:  1, 0: Unused import sys (unused-import)
-    W:  2, 0: Unused reader imported from csv (unused-import)
+    W:  8: Unreachable code
+    W: 10: Statement seems to have no effect
+    W:  4: Unused variable 'executed'
+    W:  1: Unused import os
     
 ----
 
@@ -126,7 +113,7 @@ Pylint can detect real bugs too
 Pylint can detect real bugs too
 ===============================
 
-* special methods implemented incorrectly
+* or special methods implemented incorrectly
 
    .. sourcecode:: python
 
@@ -267,21 +254,12 @@ How pylint works?
 
 * follows the general pattern of building a linter: uses ASTs
 
-* ASTs - abstract syntax trees - are a intermediate representation between code and bytecode
+* ASTs - abstract syntax trees - tree representation of the abstract sintactic structure
+  of source code
 
-* They are a structural and expressive form of holding information
-
-
---------
-
-How pylint works?
-=================
-
-* We use the Python ``ast`` module internally
+* uses the **ast** module internally
 
   .. sourcecode:: python
-  
-     $ cat a.py
    
      from ast import parse, dump
      module = parse('''
@@ -298,7 +276,7 @@ How pylint works?
 
 * ast module is great, but it is not backwards compatible
 
-* astroid strives to be a compatibile layer that between various new versions of **ast**
+* astroid strives to be a compatibile layer between various new versions of **ast**
 
 * it has a similar API with the **ast** module
 
@@ -343,7 +321,7 @@ Astroid nodes
        >>> node = extract_node('''f = 42''')
        >>> node
        <Assign() l.2 [] at 0x2c49dd0>
-       >>> node.parent
+       >>> node.parent.parent
        <Module() l.0 [] at 0x2c49d90>
 
 -----
@@ -384,7 +362,7 @@ Astroid nodes
            ''')
        >>> node.scope()
        <Function(test) l.2 [] at 0x2bfbf10>
-       >>> node = extract_node("[__(i) for i in range(10)]")
+       >>> node = extract_node("[__(foo) for foo in range(10)]")
        >>> node.scope()
        <ListComp() l.2 [] at 0x795684240>
    
@@ -401,7 +379,8 @@ Astroid nodes
        >>> module.locals
        {'f': [<AssName(f) l.2 [] at 0xd1b6191748>]}
 
-* or a node's string representations (roundtrips back to the original code)
+* or a node's string representations. This roundtrips almost completely
+  to the original source.
 
     .. sourcecode:: python
 
@@ -708,25 +687,10 @@ Pylint
 
 -----
 
-Pylint - Pyreverse
-==================
+Pylint - extra features
+=======================
 
-* get UML diagrams from your packages
-
-* Graphviz must be installed in order to work properly
-
-
-  .. code-block:: python
-
-     $ pyreverse -o png pylint
-
-.. image:: pylint_uml.png
-    :class: white center
-
-------
-
-Pylint - Spellchecking
-======================
+* pyreverse - generate UML diagrams for your project
 
 * spell check your comments and docstrings (needs python-enchant to be installed)
 
@@ -738,6 +702,8 @@ Pylint - Spellchecking
       Verify that the speling cheker work as expcted.
                       ^^^^^^^
       Did you mean: 'spieling' or 'spelling' or 'spelunking'?
+
+* Python 3 porting checker
 
 --------------
 
@@ -764,23 +730,14 @@ Pylint - Python 3 porting checker
 .. code-block:: sh
 
     def download_url(url):
-        ...
-
-    # Not evaluating, *download_url* will never be called
-    map(download_url, urls)   
+        ...    
+    map(download_url, urls) # download_url will never be called
 
     class A:
         __metaclass__ = type
         def __setslice__(self, other):
            if not isinstance(other, basestring):           
-               raise ValueError, "invalid slice type"
-
-------
-
-Pylint - Python 3 porting checker
-=================================
-
-.. code-block:: sh
+               ...
 
   $ pylint a.py --py3k
 
@@ -788,7 +745,6 @@ Pylint - Python 3 porting checker
   W:  7, 0: Assigning to a class's __metaclass__ attribute
   W:  9, 8: __setslice__ method defined
   W: 10,36: basestring built-in referenced
-  E: 11,15: Use raise ErrorClass(args) instead of raise ErrorClass, args
 
 ----
 
