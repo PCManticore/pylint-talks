@@ -481,8 +481,8 @@ Inference example #1
 
 ----
 
-Innference example #2
-=====================
+Inference example #2
+====================
 
 .. sourcecode:: python
 
