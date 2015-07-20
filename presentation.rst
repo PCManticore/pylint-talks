@@ -1,10 +1,5 @@
-﻿12 years of Pylint
-==================
-
-.. class:: title
-
------------------
-
+﻿
+=========
 
 .. class:: center
 
@@ -24,9 +19,9 @@
 
     .. epigraph::
 
-        `claudiu@ropython.org <claudiu@ropython.org>`_
-
         `bitbucket.org/pcmanticore <http://bitbucket.org/pcmanticore>`_
+
+        `@PCManticore <http://twitter.com/PCManticore>`_
         
 
 Presenter Notes
@@ -54,6 +49,24 @@ What is this *lint* you're talking about?
   * a type checker and structural analyzer
 
 -------
+
+Static analysis
+===============
+
+* analysing of a computer software without executing programs
+
+* you can benefit from using static analysis if:
+
+   * running tests takes a lot of time or work
+   
+   * you don't have tests for a legacy system
+   
+   * you need a form of automatic reviews
+   
+* not equivalent to a review
+
+
+----------
 
 
 Pylinting ugly code goes like this
@@ -213,6 +226,8 @@ Pylint can detect real bugs too
    * pylint: 2416 commits, 21536 lines of code
    * astroid: 1604 commits, 14045 lines of code
 
+* GPL licensed :-(
+
 ----
 
 
@@ -225,26 +240,14 @@ Pylint's new life
 * The only active maintainer since Pylint 1.3 - 2014
 * Pylint 2.0 in 2016
 
+  * abstract interpretation
+
+  * control flow graphs
+
+  * PEP 484
+
 ----
 
-
-Static analysis
-===============
-
-* analysing of a computer software without executing programs
-
-* you can benefit from using static analysis if:
-
-   * running tests takes a lot of time or work
-   
-   * you don't have tests for a legacy system
-   
-   * you need a form of automatic reviews
-   
-* not equivalent to a review
-
-
-----------
 
 How pylint works?
 =================
@@ -438,8 +441,8 @@ Astroid nodes
 
 -----
 
-Astroid nodes - inference
-=========================
+Inference
+=========
 
 * the critical ability that astroid nodes have is to do *inference*
 
@@ -456,8 +459,8 @@ Astroid nodes - inference
 
 ----
 
-Astroid nodes - inference example
-=================================
+Inference example #1
+====================
 
 .. sourcecode:: python
 
@@ -478,8 +481,8 @@ Astroid nodes - inference example
 
 ----
 
-Astroid nodes - inference example
-=================================
+Innference example #2
+=====================
 
 .. sourcecode:: python
 
@@ -503,8 +506,8 @@ Astroid nodes - inference example
 -------
 
 
-Astroid nodes - transforms
-==========================
+Node transforms
+===============
 
 * we can't possibly understand everything (try to understand namedtuple for instance)
 
@@ -515,8 +518,8 @@ Astroid nodes - transforms
 
 ------
 
-Astroid nodes - transforms
-==========================
+Node transforms
+===============
 
 * the transform is a function that receives a node and
   returns the same node modified or a completely new node
@@ -535,8 +538,8 @@ Astroid nodes - transforms
 
 -----
 
-Astroid nodes - inference tips
-==============================
+Inference custom rules
+======================
 
 * we also provide a way to add new inference rules
 
@@ -637,33 +640,77 @@ Astroid capabilities
 ----- 
 
 
-Pylint
-======
+Pylint - patterns over AST nodes
+================================
 
 * pylint is a fancy walker over the tree provided by astroid
 
+* the verifications can be seen as patterns that are applied to certain nodes
+
 * it uses the visitor pattern to walk the tree
 
-* on each visited node, it checks to see if there is any rule that it should verify against
+   .. sourcecode:: python
 
-.. sourcecode:: python
-
-   class TypeChecker(BaseChecker):
-
-       def visit_getattr(self, node):
-           ...
-       def visit_callfunc(self, node):
-           ...
+       class TypeChecker(BaseChecker):
+       
+          def visit_callfunc(self, node):
+             ...
 
 -----
 
+Pylint - visitor pattern example
+================================
+
+.. sourcecode:: python
+
+   import collections; print(collections.default)
+
+
+* **visit_getattr** is called with **Getattr(expr=Name(id='collections'), attrname='defaultdict')**
+  as argument
+
+* **node.expr**, which is a Name node, is inferred in order to obtain the **Module** node
+
+* Check if **Module.getattr(node.attrname)** raises NotFoundError
+
+* Apply post-failure filters: owner is a class with unknown base classes, mixin class etc.
+
+----
+
+Pylint - abstract interpretation
+================================
+
+* we're using inference, but that doesn't help when having multiple lines of code
+  modifying the same object
+
+* they need to be **interpreted** somehow. See this example for instance,
+  no way to reason if the current instance has the attribute from line 5 
+
+  .. sourcecode:: python
+     :linenos:
+
+     def __init__(self, **kwargs):
+         self.__dict__.update(kwargs)
+
+     def some_other_method(self):
+         return self.some_arguments_set_in_dunder_init()
+
+----
 
 Pylint - checkers
 =================
 
-* We have multiple checkers, each trying to detect a particular type of error
+* We have multiple categories of errors we can detect
 
-* TODoooooooo
+  * conventions (PEP 8 mostly)
+
+  * refactorings (circular import dependencies)
+
+  * warnings (code which is not guaranteed to be a bug)
+
+  * errors (most likely bugs in user application)
+
+* Two types of checkers: AST based and token based
 
 
 ------------------------
@@ -708,8 +755,8 @@ Pylint - extra features
 --------------
 
 
-Pylint
-======
+Pylint - Python 3 porting checker
+=================================
 
 * My favourite is the Python 3 porting checker
 
