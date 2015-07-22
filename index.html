@@ -1396,11 +1396,6 @@ or</blockquote>
             <header><h1>Presenter Notes</h1></header>
             <section>
             
-              <ul class="simple">
-<li>Widespreaded</li>
-<li>History, detour through static analysis</li>
-</ul>
-            
             </section>
           </div>
           <footer>
@@ -1410,7 +1405,7 @@ or</blockquote>
             </aside>
             
             <aside class="page_number">
-              1/46
+              1/45
             </aside>
           </footer>
         </div>
@@ -1440,6 +1435,12 @@ or</blockquote>
             <header><h1>Presenter Notes</h1></header>
             <section>
             
+              <ul class="simple">
+<li>Widespreaded</li>
+<li>More than a linter</li>
+<li>Over 180 verifications</li>
+</ul>
+            
             </section>
           </div>
           <footer>
@@ -1449,7 +1450,7 @@ or</blockquote>
             </aside>
             
             <aside class="page_number">
-              2/46
+              2/45
             </aside>
           </footer>
         </div>
@@ -1484,6 +1485,12 @@ or</blockquote>
             <header><h1>Presenter Notes</h1></header>
             <section>
             
+              <ul class="simple">
+<li>static program analysis is the analysis of computer software
+that is performed without actually executing programs,
+having the purpose of finding bugs and other issues in our code.</li>
+</ul>
+            
             </section>
           </div>
           <footer>
@@ -1493,7 +1500,7 @@ or</blockquote>
             </aside>
             
             <aside class="page_number">
-              3/46
+              3/45
             </aside>
           </footer>
         </div>
@@ -1523,9 +1530,9 @@ or</blockquote>
    <span class="k">if</span> <span class="ow">not</span> <span class="n">params</span><span class="p">:</span>
       <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;empty command list&#39;</span><span class="p">)</span>
       <span class="c"># I didn&#39;t intended to put this here.</span>
-      <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
+      <span class="k">for</span> <span class="n">foo</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
          <span class="c"># Oups, forgot to call it</span>
-         <span class="n">i</span><span class="o">.</span><span class="n">execute</span>
+         <span class="n">foo</span><span class="o">.</span><span class="n">execute</span>
 </pre>
 </td></tr></table><pre><span class="nv">$ </span>pylint a.py
 
@@ -1540,6 +1547,12 @@ W:  1: Unused import os
             <header><h1>Presenter Notes</h1></header>
             <section>
             
+              <ul class="simple">
+<li>examples of unreachable code</li>
+<li>statements without effects (unintended)</li>
+<li>unused variables and imports</li>
+</ul>
+            
             </section>
           </div>
           <footer>
@@ -1549,7 +1562,7 @@ W:  1: Unused import os
             </aside>
             
             <aside class="page_number">
-              4/46
+              4/45
             </aside>
           </footer>
         </div>
@@ -1568,7 +1581,7 @@ W:  1: Unused import os
 </li>
 <li><p class="first">accessing undefined members</p>
 </li>
-<li><p class="first">calling non-callable objects</p>
+<li><p class="first">calling objects which aren't callable</p>
 <blockquote>
 <pre><span class="err">$</span> <span class="n">cat</span> <span class="n">a</span><span class="o">.</span><span class="n">py</span>
 
@@ -1591,6 +1604,12 @@ W:  1: Unused import os
             <header><h1>Presenter Notes</h1></header>
             <section>
             
+              <ul class="simple">
+<li>other real bugs: undefined variables</li>
+<li>undefined members</li>
+<li>calling something which is not callable</li>
+</ul>
+            
             </section>
           </div>
           <footer>
@@ -1600,7 +1619,7 @@ W:  1: Unused import os
             </aside>
             
             <aside class="page_number">
-              5/46
+              5/45
             </aside>
           </footer>
         </div>
@@ -1640,6 +1659,10 @@ W:  1: Unused import os
             <header><h1>Presenter Notes</h1></header>
             <section>
             
+              <ul class="simple">
+<li>special methods analyzer: dunder exit requires 3 parameters</li>
+</ul>
+            
             </section>
           </div>
           <footer>
@@ -1649,7 +1672,7 @@ W:  1: Unused import os
             </aside>
             
             <aside class="page_number">
-              6/46
+              6/45
             </aside>
           </footer>
         </div>
@@ -1688,6 +1711,11 @@ W:  1: Unused import os
             <header><h1>Presenter Notes</h1></header>
             <section>
             
+              <ul class="simple">
+<li>constant checks, might hide bugs</li>
+<li>func was intended to be called here</li>
+</ul>
+            
             </section>
           </div>
           <footer>
@@ -1697,7 +1725,7 @@ W:  1: Unused import os
             </aside>
             
             <aside class="page_number">
-              7/46
+              7/45
             </aside>
           </footer>
         </div>
@@ -1717,7 +1745,7 @@ W:  1: Unused import os
 <li><p class="first">should print 1, 2, 3, 4, ..., 9 right?</p>
 <blockquote>
 <pre><span class="k">def</span> <span class="nf">bad_case2</span><span class="p">():</span>
-    <span class="k">return</span> <span class="p">[(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="p">[(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">var</span><span class="p">)</span> <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
 
 <span class="k">for</span> <span class="nb">callable</span> <span class="ow">in</span> <span class="n">bad_case2</span><span class="p">():</span>
     <span class="k">print</span><span class="p">(</span><span class="nb">callable</span><span class="p">())</span>
@@ -1731,6 +1759,12 @@ W:  1: Unused import os
             <header><h1>Presenter Notes</h1></header>
             <section>
             
+              <ul class="simple">
+<li>take a couple of moments to detect what's wrong
+with this code</li>
+<li>take a sip of water</li>
+</ul>
+            
             </section>
           </div>
           <footer>
@@ -1740,7 +1774,7 @@ W:  1: Unused import os
             </aside>
             
             <aside class="page_number">
-              8/46
+              8/45
             </aside>
           </footer>
         </div>
@@ -1764,14 +1798,14 @@ W:  1: Unused import os
 <span class="o">...</span>
 
 <span class="err">$</span> <span class="n">pylint</span> <span class="n">a</span><span class="o">.</span><span class="n">py</span>
-<span class="n">W</span><span class="p">:</span>  <span class="mi">2</span><span class="p">,</span><span class="mi">20</span><span class="p">:</span> <span class="n">Cell</span> <span class="n">variable</span> <span class="n">i</span> <span class="n">defined</span> <span class="ow">in</span> <span class="n">loop</span>
+<span class="n">W</span><span class="p">:</span>  <span class="mi">2</span><span class="p">,</span><span class="mi">20</span><span class="p">:</span> <span class="n">Cell</span> <span class="n">variable</span> <span class="s">&#39;var&#39;</span> <span class="n">defined</span> <span class="ow">in</span> <span class="n">loop</span>
 </pre>
 </blockquote>
 </li>
-<li><p class="first">the previous code created a closure and i was looked up
+<li><p class="first">the previous code created a closure and <strong>var</strong> was looked up
 in the parent's scope when executed.</p>
 </li>
-<li><p class="first"><strong>i</strong> in the parent's scope after the loop was 9.</p>
+<li><p class="first"><strong>var</strong> in the parent's scope after the loop was 9.</p>
 </li>
 </ul></section>
             
@@ -1789,7 +1823,7 @@ in the parent's scope when executed.</p>
             </aside>
             
             <aside class="page_number">
-              9/46
+              9/45
             </aside>
           </footer>
         </div>
@@ -1827,6 +1861,13 @@ in the parent's scope when executed.</p>
             <header><h1>Presenter Notes</h1></header>
             <section>
             
+              <ul class="simple">
+<li>oldest, still maintained</li>
+<li>community driven</li>
+<li>the project has little involvement from Logilab</li>
+<li>GPL was really popular in 2003</li>
+</ul>
+            
             </section>
           </div>
           <footer>
@@ -1836,7 +1877,7 @@ in the parent's scope when executed.</p>
             </aside>
             
             <aside class="page_number">
-              10/46
+              10/45
             </aside>
           </footer>
         </div>
@@ -1877,7 +1918,7 @@ in the parent's scope when executed.</p>
             </aside>
             
             <aside class="page_number">
-              11/46
+              11/45
             </aside>
           </footer>
         </div>
@@ -1897,7 +1938,7 @@ Python (astroid)</p>
 </li>
 <li><p class="first">follows the general pattern of building a linter: uses ASTs</p>
 </li>
-<li><p class="first">ASTs - abstract syntax trees - tree representation of the abstract sintactic structure
+<li><p class="first">ASTs - abstract syntax trees - tree representation of the sintactic structure
 of source code</p>
 </li>
 <li><p class="first">uses the <strong>ast</strong> module internally</p>
@@ -1925,7 +1966,7 @@ of source code</p>
             </aside>
             
             <aside class="page_number">
-              12/46
+              12/45
             </aside>
           </footer>
         </div>
@@ -1934,6 +1975,44 @@ of source code</p>
       <!-- slide source: presentation.rst -->
       <div class="slide-wrapper">
         <div class="slide slide-13">
+          <div class="inner">
+            
+            <header><h1>How pylint works?</h1></header>
+            
+            
+            <section><object class="center" data="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+DQo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPg0KPCEtLSBHZW5lcmF0ZWQgYnkgZ3JhcGh2aXogdmVyc2lvbiAyLjM4LjAgKDIwMTQwNDEzLjIwNDEpDQogLS0+DQo8IS0tIFRpdGxlOiAlMyBQYWdlczogMSAtLT4NCjxzdmcgd2lkdGg9IjUwOHB0IiBoZWlnaHQ9IjM5M3B0IiB2aWV3Qm94PSIwLjAwIDAuMDAgNTA3LjU1IDM5My4wMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+DQo8ZyBpZD0iZ3JhcGgwIiBjbGFzcz0iZ3JhcGgiIHRyYW5zZm9ybT0ic2NhbGUoMSAxKSByb3RhdGUoMCkgdHJhbnNsYXRlKDQgMzg5KSI+DQo8dGl0bGU+JTM8L3RpdGxlPg0KPHBvbHlnb24gZmlsbD0id2hpdGUiIHN0cm9rZT0ibm9uZSIgcG9pbnRzPSItNCw0IC00LC0zODkgNTAzLjU0NywtMzg5IDUwMy41NDcsNCAtNCw0Ii8+DQo8IS0tIFtOYW1lXSAtLT4NCjxnIGlkPSJub2RlMSIgY2xhc3M9Im5vZGUiPjx0aXRsZT5bTmFtZV08L3RpdGxlPg0KPHBvbHlnb24gZmlsbD0ibGlnaHRibHVlIiBzdHJva2U9IiM1OTlmYjYiIHBvaW50cz0iNDAuNSwtMTc0LjUgNDAuNSwtMjEwLjUgOTUuNSwtMjEwLjUgOTUuNSwtMTc0LjUgNDAuNSwtMTc0LjUiLz4NCjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjY4IiB5PSItMTg4LjgiIGZvbnQtZmFtaWx5PSJVYnVudHUsTW9ub3NwYWNlIiBmb250LXNpemU9IjE0LjAwIj5OYW1lPC90ZXh0Pg0KPC9nPg0KPCEtLSB4MSAtLT4NCjxnIGlkPSJub2RlNiIgY2xhc3M9Im5vZGUiPjx0aXRsZT54MTwvdGl0bGU+DQo8ZWxsaXBzZSBmaWxsPSIjZmZkODkwIiBzdHJva2U9Im9yYW5nZSIgY3g9IjI3IiBjeT0iLTEwNSIgcng9IjI3IiByeT0iMTgiLz4NCjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjI3IiB5PSItMTAxLjMiIGZvbnQtZmFtaWx5PSJVYnVudHUsTW9ub3NwYWNlIiBmb250LXNpemU9IjE0LjAwIj4neCc8L3RleHQ+DQo8L2c+DQo8IS0tIFtOYW1lXSYjNDU7Jmd0O3gxIC0tPg0KPGcgaWQ9ImVkZ2UzIiBjbGFzcz0iZWRnZSI+PHRpdGxlPltOYW1lXTpuYW1lLSZndDt4MTwvdGl0bGU+DQo8cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiNjNjgxMDAiIGQ9Ik01OS4zMDUsLTE3NC4xNTZDNTMuNDQxMywtMTYxLjc4NSA0NS42MjI5LC0xNDUuMjkgMzkuMTQ2NCwtMTMxLjYyNiIvPg0KPHBvbHlnb24gZmlsbD0iI2M2ODEwMCIgc3Ryb2tlPSIjYzY4MTAwIiBwb2ludHM9IjQyLjE2MDcsLTEyOS44MTQgMzQuNzE0OCwtMTIyLjI3NiAzNS44MzUyLC0xMzIuODEyIDQyLjE2MDcsLTEyOS44MTQiLz4NCjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjU1LjUiIHk9Ii0xNDQuOCIgZm9udC1mYW1pbHk9IlRpbWVzLHNlcmlmIiBmb250LXNpemU9IjE0LjAwIj5pZDwvdGV4dD4NCjwvZz4NCjwhLS0gUGFyYW0gLS0+DQo8ZyBpZD0ibm9kZTExIiBjbGFzcz0ibm9kZSI+PHRpdGxlPlBhcmFtPC90aXRsZT4NCjxlbGxpcHNlIGZpbGw9ImxpZ2h0Ymx1ZSIgc3Ryb2tlPSIjNTk5ZmI2IiBjeD0iMTEwIiBjeT0iLTEwNSIgcng9IjM3Ljg5NDMiIHJ5PSIxOCIvPg0KPHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMTEwIiB5PSItMTAxLjMiIGZvbnQtZmFtaWx5PSJVYnVudHUsTW9ub3NwYWNlIiBmb250LXNpemU9IjE0LjAwIj5QYXJhbTwvdGV4dD4NCjwvZz4NCjwhLS0gW05hbWVdJiM0NTsmZ3Q7UGFyYW0gLS0+DQo8ZyBpZD0iZWRnZTQiIGNsYXNzPSJlZGdlIj48dGl0bGU+W05hbWVdOm5hbWUtJmd0O1BhcmFtPC90aXRsZT4NCjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzU5OWZiNiIgZD0iTTc2LjkwNzEsLTE3NC4xNTZDODIuODM2MywtMTYxLjk0NCA5MC43MTY2LC0xNDUuNzE1IDk3LjI5OTksLTEzMi4xNTYiLz4NCjxwb2x5Z29uIGZpbGw9IiM1OTlmYjYiIHN0cm9rZT0iIzU5OWZiNiIgcG9pbnRzPSIxMDAuNTk4LC0xMzMuMzc2IDEwMS44MTgsLTEyMi44NTEgOTQuMzAxNSwtMTMwLjMxOCAxMDAuNTk4LC0xMzMuMzc2Ii8+DQo8dGV4dCB0ZXh0LWFuY2hvcj0ibWlkZGxlIiB4PSIxMTMiIHk9Ii0xNDQuOCIgZm9udC1mYW1pbHk9IlRpbWVzLHNlcmlmIiBmb250LXNpemU9IjE0LjAwIj5jb250ZXh0PC90ZXh0Pg0KPC9nPg0KPCEtLSBbXSAtLT4NCjxnIGlkPSJub2RlMiIgY2xhc3M9Im5vZGUiPjx0aXRsZT5bXTwvdGl0bGU+DQo8cG9seWdvbiBmaWxsPSJ3aGl0ZSIgc3Ryb2tlPSIjNTk5ZmI2IiBwb2ludHM9IjI4NSwtMTc0LjUgMjg1LC0yMTAuNSAzMzksLTIxMC41IDMzOSwtMTc0LjUgMjg1LC0xNzQuNSIvPg0KPHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzEyIiB5PSItMTg4LjgiIGZvbnQtZmFtaWx5PSJVYnVudHUsTW9ub3NwYWNlIiBmb250LXNpemU9IjE0LjAwIj4gPC90ZXh0Pg0KPC9nPg0KPCEtLSBOYW1lMiAtLT4NCjxnIGlkPSJub2RlMyIgY2xhc3M9Im5vZGUiPjx0aXRsZT5OYW1lMjwvdGl0bGU+DQo8ZWxsaXBzZSBmaWxsPSJsaWdodGJsdWUiIHN0cm9rZT0iIzU5OWZiNiIgY3g9IjMxMSIgY3k9Ii0xMDUiIHJ4PSIzNS45OTU0IiByeT0iMTgiLz4NCjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjMxMSIgeT0iLTEwMS4zIiBmb250LWZhbWlseT0iVWJ1bnR1LE1vbm9zcGFjZSIgZm9udC1zaXplPSIxNC4wMCI+TmFtZTwvdGV4dD4NCjwvZz4NCjwhLS0geDIgLS0+DQo8ZyBpZD0ibm9kZTciIGNsYXNzPSJub2RlIj48dGl0bGU+eDI8L3RpdGxlPg0KPGVsbGlwc2UgZmlsbD0iI2ZmZDg5MCIgc3Ryb2tlPSJvcmFuZ2UiIGN4PSIyNzMiIGN5PSItMTgiIHJ4PSIyNyIgcnk9IjE4Ii8+DQo8dGV4dCB0ZXh0LWFuY2hvcj0ibWlkZGxlIiB4PSIyNzMiIHk9Ii0xNC4zIiBmb250LWZhbWlseT0iVWJ1bnR1LE1vbm9zcGFjZSIgZm9udC1zaXplPSIxNC4wMCI+J3gnPC90ZXh0Pg0KPC9nPg0KPCEtLSBOYW1lMiYjNDU7Jmd0O3gyIC0tPg0KPGcgaWQ9ImVkZ2UxMSIgY2xhc3M9ImVkZ2UiPjx0aXRsZT5OYW1lMi0mZ3Q7eDI8L3RpdGxlPg0KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzY4MTAwIiBkPSJNMzAzLjQ5MiwtODcuMjA2N0MyOTguMDk3LC03NS4xMzc3IDI5MC43MjEsLTU4LjYzODQgMjg0LjU3NSwtNDQuODkwNiIvPg0KPHBvbHlnb24gZmlsbD0iI2M2ODEwMCIgc3Ryb2tlPSIjYzY4MTAwIiBwb2ludHM9IjI4Ny42MzksLTQzLjE2OTkgMjgwLjM2MywtMzUuNDY5MiAyODEuMjQ5LC00Ni4wMjY5IDI4Ny42MzksLTQzLjE2OTkiLz4NCjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjMwMC41IiB5PSItNTcuOCIgZm9udC1mYW1pbHk9IlRpbWVzLHNlcmlmIiBmb250LXNpemU9IjE0LjAwIj5pZDwvdGV4dD4NCjwvZz4NCjwhLS0gTG9hZCAtLT4NCjxnIGlkPSJub2RlMTQiIGNsYXNzPSJub2RlIj48dGl0bGU+TG9hZDwvdGl0bGU+DQo8ZWxsaXBzZSBmaWxsPSJsaWdodGJsdWUiIHN0cm9rZT0iIzU5OWZiNiIgY3g9IjM0OSIgY3k9Ii0xOCIgcng9IjMxLjM5NTciIHJ5PSIxOCIvPg0KPHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzQ5IiB5PSItMTQuMyIgZm9udC1mYW1pbHk9IlVidW50dSxNb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTQuMDAiPkxvYWQ8L3RleHQ+DQo8L2c+DQo8IS0tIE5hbWUyJiM0NTsmZ3Q7TG9hZCAtLT4NCjxnIGlkPSJlZGdlMTIiIGNsYXNzPSJlZGdlIj48dGl0bGU+TmFtZTItJmd0O0xvYWQ8L3RpdGxlPg0KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNTk5ZmI2IiBkPSJNMzE4LjUwOCwtODcuMjA2N0MzMjMuODY4LC03NS4yMTU2IDMzMS4xODQsLTU4Ljg1MTEgMzM3LjMwNiwtNDUuMTU3MSIvPg0KPHBvbHlnb24gZmlsbD0iIzU5OWZiNiIgc3Ryb2tlPSIjNTk5ZmI2IiBwb2ludHM9IjM0MC42MjIsLTQ2LjMxNjEgMzQxLjUwOCwtMzUuNzU4NCAzMzQuMjMxLC00My40NTkxIDM0MC42MjIsLTQ2LjMxNjEiLz4NCjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjM1MyIgeT0iLTU3LjgiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxNC4wMCI+Y29udGV4dDwvdGV4dD4NCjwvZz4NCjwhLS0gTm9uZTEgLS0+DQo8ZyBpZD0ibm9kZTQiIGNsYXNzPSJub2RlIj48dGl0bGU+Tm9uZTE8L3RpdGxlPg0KPGVsbGlwc2UgZmlsbD0iI2ZmZDg5MCIgc3Ryb2tlPSJvcmFuZ2UiIGN4PSIxNDciIGN5PSItMTkyLjUiIHJ4PSIzMy41OTUyIiByeT0iMTgiLz4NCjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjE0NyIgeT0iLTE4OC44IiBmb250LWZhbWlseT0iVWJ1bnR1LE1vbm9zcGFjZSIgZm9udC1zaXplPSIxNC4wMCI+Tm9uZTwvdGV4dD4NCjwvZz4NCjwhLS0gTm9uZTIgLS0+DQo8ZyBpZD0ibm9kZTUiIGNsYXNzPSJub2RlIj48dGl0bGU+Tm9uZTI8L3RpdGxlPg0KPGVsbGlwc2UgZmlsbD0iI2ZmZDg5MCIgc3Ryb2tlPSJvcmFuZ2UiIGN4PSIyMzMiIGN5PSItMTkyLjUiIHJ4PSIzMy41OTUyIiByeT0iMTgiLz4NCjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjIzMyIgeT0iLTE4OC44IiBmb250LWZhbWlseT0iVWJ1bnR1LE1vbm9zcGFjZSIgZm9udC1zaXplPSIxNC4wMCI+Tm9uZTwvdGV4dD4NCjwvZz4NCjwhLS0gMSAtLT4NCjxnIGlkPSJub2RlOCIgY2xhc3M9Im5vZGUiPjx0aXRsZT4xPC90aXRsZT4NCjxlbGxpcHNlIGZpbGw9IiNmZmQ4OTAiIHN0cm9rZT0ib3JhbmdlIiBjeD0iNDY5IiBjeT0iLTE4IiByeD0iMjciIHJ5PSIxOCIvPg0KPHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iNDY5IiB5PSItMTQuMyIgZm9udC1mYW1pbHk9IlVidW50dSxNb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTQuMDAiPjE8L3RleHQ+DQo8L2c+DQo8IS0tIExhbWJkYSAtLT4NCjxnIGlkPSJub2RlOSIgY2xhc3M9Im5vZGUiPjx0aXRsZT5MYW1iZGE8L3RpdGxlPg0KPGVsbGlwc2UgZmlsbD0ibGlnaHRibHVlIiBzdHJva2U9IiM1OTlmYjYiIGN4PSIzMTAiIGN5PSItMzY3IiByeD0iNDQuMzkzIiByeT0iMTgiLz4NCjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjMxMCIgeT0iLTM2My4zIiBmb250LWZhbWlseT0iVWJ1bnR1LE1vbm9zcGFjZSIgZm9udC1zaXplPSIxNC4wMCI+TGFtYmRhPC90ZXh0Pg0KPC9nPg0KPCEtLSBhcmd1bWVudHMgLS0+DQo8ZyBpZD0ibm9kZTEwIiBjbGFzcz0ibm9kZSI+PHRpdGxlPmFyZ3VtZW50czwvdGl0bGU+DQo8ZWxsaXBzZSBmaWxsPSJsaWdodGJsdWUiIHN0cm9rZT0iIzU5OWZiNiIgY3g9IjIzMyIgY3k9Ii0yODAiIHJ4PSI1NS43OTAzIiByeT0iMTgiLz4NCjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjIzMyIgeT0iLTI3Ni4zIiBmb250LWZhbWlseT0iVWJ1bnR1LE1vbm9zcGFjZSIgZm9udC1zaXplPSIxNC4wMCI+YXJndW1lbnRzPC90ZXh0Pg0KPC9nPg0KPCEtLSBMYW1iZGEmIzQ1OyZndDthcmd1bWVudHMgLS0+DQo8ZyBpZD0iZWRnZTEiIGNsYXNzPSJlZGdlIj48dGl0bGU+TGFtYmRhLSZndDthcmd1bWVudHM8L3RpdGxlPg0KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNTk5ZmI2IiBkPSJNMjk1LjE1NCwtMzQ5LjYxMUMyODMuNzIzLC0zMzYuOTkzIDI2Ny43NSwtMzE5LjM2MSAyNTQuODYsLTMwNS4xMzEiLz4NCjxwb2x5Z29uIGZpbGw9IiM1OTlmYjYiIHN0cm9rZT0iIzU5OWZiNiIgcG9pbnRzPSIyNTcuMzcxLC0zMDIuNjkgMjQ4LjA2NCwtMjk3LjYyOSAyNTIuMTgzLC0zMDcuMzkgMjU3LjM3MSwtMzAyLjY5Ii8+DQo8dGV4dCB0ZXh0LWFuY2hvcj0ibWlkZGxlIiB4PSIyODguNSIgeT0iLTMxOS44IiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTQuMDAiPmFyZ3M8L3RleHQ+DQo8L2c+DQo8IS0tIFJldHVybiAtLT4NCjxnIGlkPSJub2RlMTIiIGNsYXNzPSJub2RlIj48dGl0bGU+UmV0dXJuPC90aXRsZT4NCjxlbGxpcHNlIGZpbGw9ImxpZ2h0Ymx1ZSIgc3Ryb2tlPSIjNTk5ZmI2IiBjeD0iMzY2IiBjeT0iLTI4MCIgcng9IjQwLjA5MzkiIHJ5PSIxOCIvPg0KPHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzY2IiB5PSItMjc2LjMiIGZvbnQtZmFtaWx5PSJVYnVudHUsTW9ub3NwYWNlIiBmb250LXNpemU9IjE0LjAwIj5SZXR1cm48L3RleHQ+DQo8L2c+DQo8IS0tIExhbWJkYSYjNDU7Jmd0O1JldHVybiAtLT4NCjxnIGlkPSJlZGdlOCIgY2xhc3M9ImVkZ2UiPjx0aXRsZT5MYW1iZGEtJmd0O1JldHVybjwvdGl0bGU+DQo8cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiM1OTlmYjYiIGQ9Ik0zMjEuMDY0LC0zNDkuMjA3QzMyOS4xNywtMzM2LjkwMyAzNDAuMzA5LC0zMTkuOTk2IDM0OS40NjgsLTMwNi4wOTMiLz4NCjxwb2x5Z29uIGZpbGw9IiM1OTlmYjYiIHN0cm9rZT0iIzU5OWZiNiIgcG9pbnRzPSIzNTIuNTcxLC0zMDcuNzQ1IDM1NS4xNSwtMjk3LjQ2OSAzNDYuNzI1LC0zMDMuODk0IDM1Mi41NzEsLTMwNy43NDUiLz4NCjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjM1NiIgeT0iLTMxOS44IiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTQuMDAiPmJvZHk8L3RleHQ+DQo8L2c+DQo8IS0tIGFyZ3VtZW50cyYjNDU7Jmd0O1tOYW1lXSAtLT4NCjxnIGlkPSJlZGdlMiIgY2xhc3M9ImVkZ2UiPjx0aXRsZT5hcmd1bWVudHMtJmd0O1tOYW1lXTwvdGl0bGU+DQo8cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiM1OTlmYjYiIGQ9Ik0xOTkuNDg2LC0yNjUuNDNDMTg0Ljk5OSwtMjU5LjI4NSAxNjcuOTcsLTI1MS42ODUgMTUzLC0yNDQgMTM2LjQzNCwtMjM1LjQ5NiAxMTguNjQ0LC0yMjUuMTMxIDEwMy42NDIsLTIxNi4wMDkiLz4NCjxwb2x5Z29uIGZpbGw9IiM1OTlmYjYiIHN0cm9rZT0iIzU5OWZiNiIgcG9pbnRzPSIxMDUuMDUxLC0yMTIuNzY3IDk0LjY5NzksLTIxMC41MTggMTAxLjM4OSwtMjE4LjczMyAxMDUuMDUxLC0yMTIuNzY3Ii8+DQo8dGV4dCB0ZXh0LWFuY2hvcj0ibWlkZGxlIiB4PSIxNjQuNSIgeT0iLTIzMi44IiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTQuMDAiPmFyZ3M8L3RleHQ+DQo8L2c+DQo8IS0tIGFyZ3VtZW50cyYjNDU7Jmd0O1tdIC0tPg0KPGcgaWQ9ImVkZ2U3IiBjbGFzcz0iZWRnZSI+PHRpdGxlPmFyZ3VtZW50cy0mZ3Q7W108L3RpdGxlPg0KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNTk5ZmI2IiBkPSJNMjUxLjY4LC0yNjIuNzgxQzI1OC4wMDIsLTI1Ny4wMzcgMjY0Ljk4MiwtMjUwLjQwNiAyNzEsLTI0NCAyNzguNDIzLC0yMzYuMDk5IDI4Ni4wNDUsLTIyNy4wMjIgMjkyLjY3MiwtMjE4Ljc2MiIvPg0KPHBvbHlnb24gZmlsbD0iIzU5OWZiNiIgc3Ryb2tlPSIjNTk5ZmI2IiBwb2ludHM9IjI5NS40NzEsLTIyMC44NjUgMjk4LjkyMywtMjEwLjg0OSAyODkuOTc4LC0yMTYuNTI2IDI5NS40NzEsLTIyMC44NjUiLz4NCjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjMwNi41IiB5PSItMjMyLjgiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxNC4wMCI+ZGVmYXVsdHM8L3RleHQ+DQo8L2c+DQo8IS0tIGFyZ3VtZW50cyYjNDU7Jmd0O05vbmUxIC0tPg0KPGcgaWQ9ImVkZ2U1IiBjbGFzcz0iZWRnZSI+PHRpdGxlPmFyZ3VtZW50cy0mZ3Q7Tm9uZTE8L3RpdGxlPg0KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzY4MTAwIiBkPSJNMjE0LjQzNSwtMjYyLjk1MUMyMDcuODYyLC0yNTcuMTA5IDIwMC40OTEsLTI1MC4zNzQgMTk0LC0yNDQgMTg1LjIzMywtMjM1LjM5IDE3NS45NDQsLTIyNS41NzEgMTY3Ljk2LC0yMTYuODk0Ii8+DQo8cG9seWdvbiBmaWxsPSIjYzY4MTAwIiBzdHJva2U9IiNjNjgxMDAiIHBvaW50cz0iMTcwLjM3MiwtMjE0LjM0NCAxNjEuMDQ3LC0yMDkuMzE0IDE2NS4yLC0yMTkuMDYxIDE3MC4zNzIsLTIxNC4zNDQiLz4NCjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjIxMS41IiB5PSItMjMyLjgiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxNC4wMCI+dmFyYXJnPC90ZXh0Pg0KPC9nPg0KPCEtLSBhcmd1bWVudHMmIzQ1OyZndDtOb25lMiAtLT4NCjxnIGlkPSJlZGdlNiIgY2xhc3M9ImVkZ2UiPjx0aXRsZT5hcmd1bWVudHMtJmd0O05vbmUyPC90aXRsZT4NCjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2M2ODEwMCIgZD0iTTIzMywtMjYxLjY5OEMyMzMsLTI0OS45OTMgMjMzLC0yMzQuMjg2IDIzMywtMjIwLjg5NyIvPg0KPHBvbHlnb24gZmlsbD0iI2M2ODEwMCIgc3Ryb2tlPSIjYzY4MTAwIiBwb2ludHM9IjIzNi41LC0yMjAuNzc2IDIzMywtMjEwLjc3NiAyMjkuNSwtMjIwLjc3NyAyMzYuNSwtMjIwLjc3NiIvPg0KPHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMjUwIiB5PSItMjMyLjgiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxNC4wMCI+a3dhcmc8L3RleHQ+DQo8L2c+DQo8IS0tIEJpbk9wIC0tPg0KPGcgaWQ9Im5vZGUxMyIgY2xhc3M9Im5vZGUiPjx0aXRsZT5CaW5PcDwvdGl0bGU+DQo8ZWxsaXBzZSBmaWxsPSJsaWdodGJsdWUiIHN0cm9rZT0iIzU5OWZiNiIgY3g9IjM5MyIgY3k9Ii0xOTIuNSIgcng9IjM2LjI5MzgiIHJ5PSIxOCIvPg0KPHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzkzIiB5PSItMTg4LjgiIGZvbnQtZmFtaWx5PSJVYnVudHUsTW9ub3NwYWNlIiBmb250LXNpemU9IjE0LjAwIj5CaW5PcDwvdGV4dD4NCjwvZz4NCjwhLS0gUmV0dXJuJiM0NTsmZ3Q7QmluT3AgLS0+DQo8ZyBpZD0iZWRnZTkiIGNsYXNzPSJlZGdlIj48dGl0bGU+UmV0dXJuLSZndDtCaW5PcDwvdGl0bGU+DQo8cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiM1OTlmYjYiIGQ9Ik0zNzEuMzM0LC0yNjIuMTA4QzM3NS4xMDYsLTI1MC4xNjMgMzgwLjI0MSwtMjMzLjkwNSAzODQuNTY0LC0yMjAuMjEzIi8+DQo8cG9seWdvbiBmaWxsPSIjNTk5ZmI2IiBzdHJva2U9IiM1OTlmYjYiIHBvaW50cz0iMzg4LjAwMywtMjIwLjk0NyAzODcuNjc3LC0yMTAuMzU3IDM4MS4zMjgsLTIxOC44MzkgMzg4LjAwMywtMjIwLjk0NyIvPg0KPHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzk3IiB5PSItMjMyLjgiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxNC4wMCI+dmFsdWU8L3RleHQ+DQo8L2c+DQo8IS0tIEJpbk9wJiM0NTsmZ3Q7TmFtZTIgLS0+DQo8ZyBpZD0iZWRnZTEwIiBjbGFzcz0iZWRnZSI+PHRpdGxlPkJpbk9wLSZndDtOYW1lMjwvdGl0bGU+DQo8cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiM1OTlmYjYiIGQ9Ik0zNzcuOTYsLTE3NS44MThDMzY1LjM2MSwtMTYyLjY4MSAzNDcuMjA1LC0xNDMuNzUxIDMzMi45NzcsLTEyOC45MTUiLz4NCjxwb2x5Z29uIGZpbGw9IiM1OTlmYjYiIHN0cm9rZT0iIzU5OWZiNiIgcG9pbnRzPSIzMzUuMzkzLC0xMjYuMzc3IDMyNS45NDUsLTEyMS41ODMgMzMwLjM0MSwtMTMxLjIyMyAzMzUuMzkzLC0xMjYuMzc3Ii8+DQo8dGV4dCB0ZXh0LWFuY2hvcj0ibWlkZGxlIiB4PSIzNjYuNSIgeT0iLTE0NC44IiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTQuMDAiPmxlZnQ8L3RleHQ+DQo8L2c+DQo8IS0tIEFkZCAtLT4NCjxnIGlkPSJub2RlMTUiIGNsYXNzPSJub2RlIj48dGl0bGU+QWRkPC90aXRsZT4NCjxlbGxpcHNlIGZpbGw9ImxpZ2h0Ymx1ZSIgc3Ryb2tlPSIjNTk5ZmI2IiBjeD0iMzkzIiBjeT0iLTEwNSIgcng9IjI3Ljg5NTEiIHJ5PSIxOCIvPg0KPHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzkzIiB5PSItMTAxLjMiIGZvbnQtZmFtaWx5PSJVYnVudHUsTW9ub3NwYWNlIiBmb250LXNpemU9IjE0LjAwIj5BZGQ8L3RleHQ+DQo8L2c+DQo8IS0tIEJpbk9wJiM0NTsmZ3Q7QWRkIC0tPg0KPGcgaWQ9ImVkZ2UxMyIgY2xhc3M9ImVkZ2UiPjx0aXRsZT5CaW5PcC0mZ3Q7QWRkPC90aXRsZT4NCjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzU5OWZiNiIgZD0iTTM5MywtMTc0LjE5OEMzOTMsLTE2Mi40OTMgMzkzLC0xNDYuNzg2IDM5MywtMTMzLjM5NyIvPg0KPHBvbHlnb24gZmlsbD0iIzU5OWZiNiIgc3Ryb2tlPSIjNTk5ZmI2IiBwb2ludHM9IjM5Ni41LC0xMzMuMjc2IDM5MywtMTIzLjI3NiAzODkuNSwtMTMzLjI3NyAzOTYuNSwtMTMzLjI3NiIvPg0KPHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iNDAwIiB5PSItMTQ0LjgiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxNC4wMCI+b3A8L3RleHQ+DQo8L2c+DQo8IS0tIE51bSAtLT4NCjxnIGlkPSJub2RlMTYiIGNsYXNzPSJub2RlIj48dGl0bGU+TnVtPC90aXRsZT4NCjxlbGxpcHNlIGZpbGw9ImxpZ2h0Ymx1ZSIgc3Ryb2tlPSIjNTk5ZmI2IiBjeD0iNDY5IiBjeT0iLTEwNSIgcng9IjMwLjU5NDciIHJ5PSIxOCIvPg0KPHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iNDY5IiB5PSItMTAxLjMiIGZvbnQtZmFtaWx5PSJVYnVudHUsTW9ub3NwYWNlIiBmb250LXNpemU9IjE0LjAwIj5OdW08L3RleHQ+DQo8L2c+DQo8IS0tIEJpbk9wJiM0NTsmZ3Q7TnVtIC0tPg0KPGcgaWQ9ImVkZ2UxNCIgY2xhc3M9ImVkZ2UiPjx0aXRsZT5CaW5PcC0mZ3Q7TnVtPC90aXRsZT4NCjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzU5OWZiNiIgZD0iTTQwNi45NCwtMTc1LjgxOEM0MTguNTgyLC0xNjIuNzIgNDM1LjM0NCwtMTQzLjg2NCA0NDguNTEzLC0xMjkuMDQ4Ii8+DQo8cG9seWdvbiBmaWxsPSIjNTk5ZmI2IiBzdHJva2U9IiM1OTlmYjYiIHBvaW50cz0iNDUxLjM3NywtMTMxLjA5NCA0NTUuNDA1LC0xMjEuMjk1IDQ0Ni4xNDUsLTEyNi40NDQgNDUxLjM3NywtMTMxLjA5NCIvPg0KPHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iNDUxIiB5PSItMTQ0LjgiIGZvbnQtZmFtaWx5PSJUaW1lcyxzZXJpZiIgZm9udC1zaXplPSIxNC4wMCI+cmlnaHQ8L3RleHQ+DQo8L2c+DQo8IS0tIE51bSYjNDU7Jmd0OzEgLS0+DQo8ZyBpZD0iZWRnZTE1IiBjbGFzcz0iZWRnZSI+PHRpdGxlPk51bS0mZ3Q7MTwvdGl0bGU+DQo8cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiNjNjgxMDAiIGQ9Ik00NjksLTg2Ljc5OUM0NjksLTc1LjE2MjYgNDY5LC01OS41NDc5IDQ2OSwtNDYuMjM2OCIvPg0KPHBvbHlnb24gZmlsbD0iI2M2ODEwMCIgc3Ryb2tlPSIjYzY4MTAwIiBwb2ludHM9IjQ3Mi41LC00Ni4xNzU0IDQ2OSwtMzYuMTc1NCA0NjUuNSwtNDYuMTc1NSA0NzIuNSwtNDYuMTc1NCIvPg0KPHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iNDcyLjUiIHk9Ii01Ny44IiBmb250LWZhbWlseT0iVGltZXMsc2VyaWYiIGZvbnQtc2l6ZT0iMTQuMDAiPm48L3RleHQ+DQo8L2c+DQo8L2c+DQo8L3N2Zz4=" style="width: 650px; height: 650px;" type="image/svg+xml">
+ast.svg</object>
+<p class="rubric">Footnotes</p>
+<table class="docutils footnote" frame="void" id="f1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[1]</td><td><a class="reference external" href="http://hackflow.com/blog/2015/03/29/metaprogramming-beyond-decency/">http://hackflow.com/blog/2015/03/29/metaprogramming-beyond-decency/</a></td></tr>
+</tbody>
+</table></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="presentation.rst">presentation.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              13/45
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: presentation.rst -->
+      <div class="slide-wrapper">
+        <div class="slide slide-14">
           <div class="inner">
             
             <header><h1>How pylint works?</h1></header>
@@ -1969,46 +2048,7 @@ of source code</p>
             </aside>
             
             <aside class="page_number">
-              13/46
-            </aside>
-          </footer>
-        </div>
-      </div>
-      
-      <!-- slide source: presentation.rst -->
-      <div class="slide-wrapper">
-        <div class="slide slide-14">
-          <div class="inner">
-            
-            <header><h1>Astroid nodes</h1></header>
-            
-            
-            <section><ul class="simple">
-<li>the nodes are almost equivalent with the one from the ast module<ul>
-<li><cite>CallFunc</cite> - function call</li>
-<li><cite>Function</cite> - function definition</li>
-<li><cite>Class</cite> - a class definition</li>
-<li><cite>Arguments</cite> - a function's arguments</li>
-<li>etc</li>
-</ul>
-</li>
-</ul></section>
-            
-          </div>
-          <div class="presenter_notes">
-            <header><h1>Presenter Notes</h1></header>
-            <section>
-            
-            </section>
-          </div>
-          <footer>
-            
-            <aside class="source">
-              Source: <a href="presentation.rst">presentation.rst</a>
-            </aside>
-            
-            <aside class="page_number">
-              14/46
+              14/45
             </aside>
           </footer>
         </div>
@@ -2027,9 +2067,14 @@ of source code</p>
 <ul>
 <li><p class="first">you can get a node's parent:</p>
 <pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">astroid</span> <span class="kn">import</span> <span class="n">extract_node</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">node</span> <span class="o">=</span> <span class="n">extract_node</span><span class="p">(</span><span class="s">&#39;&#39;&#39;f = 42&#39;&#39;&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">node</span> <span class="o">=</span> <span class="n">extract_node</span><span class="p">(</span><span class="s">&#39;&#39;&#39;</span>
+<span class="s">def func():</span>
+<span class="s">    f = 42 #@</span>
+<span class="s">&#39;&#39;&#39;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">node</span>
 <span class="o">&lt;</span><span class="n">Assign</span><span class="p">()</span> <span class="n">l</span><span class="o">.</span><span class="mi">2</span> <span class="p">[]</span> <span class="n">at</span> <span class="mh">0x2c49dd0</span><span class="o">&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">node</span><span class="o">.</span><span class="n">parent</span>
+<span class="o">&lt;</span><span class="n">Function</span><span class="p">()</span> <span class="mf">1.2</span> <span class="p">[]</span> <span class="n">at</span> <span class="mh">0x2c49d80</span><span class="o">&gt;</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">node</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span>
 <span class="o">&lt;</span><span class="n">Module</span><span class="p">()</span> <span class="n">l</span><span class="o">.</span><span class="mi">0</span> <span class="p">[]</span> <span class="n">at</span> <span class="mh">0x2c49d90</span><span class="o">&gt;</span>
 </pre>
@@ -2052,7 +2097,7 @@ of source code</p>
             </aside>
             
             <aside class="page_number">
-              15/46
+              15/45
             </aside>
           </footer>
         </div>
@@ -2095,7 +2140,7 @@ of source code</p>
             </aside>
             
             <aside class="page_number">
-              16/46
+              16/45
             </aside>
           </footer>
         </div>
@@ -2134,6 +2179,10 @@ of source code</p>
             <header><h1>Presenter Notes</h1></header>
             <section>
             
+              <ul class="simple">
+<li>On Python 3 the scope of the <cite>foo</cite> is the list comprehension itself</li>
+</ul>
+            
             </section>
           </div>
           <footer>
@@ -2143,7 +2192,7 @@ of source code</p>
             </aside>
             
             <aside class="page_number">
-              17/46
+              17/45
             </aside>
           </footer>
         </div>
@@ -2152,52 +2201,6 @@ of source code</p>
       <!-- slide source: presentation.rst -->
       <div class="slide-wrapper">
         <div class="slide slide-18">
-          <div class="inner">
-            
-            <header><h1>Astroid nodes</h1></header>
-            
-            
-            <section><ul>
-<li><p class="first">you can get a node's locals</p>
-<blockquote>
-<pre><span class="o">&gt;&gt;&gt;</span> <span class="n">module</span><span class="o">.</span><span class="n">locals</span>
-<span class="p">{</span><span class="s">&#39;f&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">AssName</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="n">l</span><span class="o">.</span><span class="mi">2</span> <span class="p">[]</span> <span class="n">at</span> <span class="mh">0xd1b6191748</span><span class="o">&gt;</span><span class="p">]}</span>
-</pre>
-</blockquote>
-</li>
-<li><p class="first">or a node's string representations. This roundtrips almost completely
-to the original source.</p>
-<blockquote>
-<pre><span class="o">&gt;&gt;&gt;</span> <span class="n">module</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span>
-<span class="s">&#39;f = 42&#39;</span>
-</pre>
-</blockquote>
-</li>
-</ul></section>
-            
-          </div>
-          <div class="presenter_notes">
-            <header><h1>Presenter Notes</h1></header>
-            <section>
-            
-            </section>
-          </div>
-          <footer>
-            
-            <aside class="source">
-              Source: <a href="presentation.rst">presentation.rst</a>
-            </aside>
-            
-            <aside class="page_number">
-              18/46
-            </aside>
-          </footer>
-        </div>
-      </div>
-      
-      <!-- slide source: presentation.rst -->
-      <div class="slide-wrapper">
-        <div class="slide slide-19">
           <div class="inner">
             
             <header><h1>Astroid nodes</h1></header>
@@ -2232,7 +2235,7 @@ to the original source.</p>
             </aside>
             
             <aside class="page_number">
-              19/46
+              18/45
             </aside>
           </footer>
         </div>
@@ -2240,7 +2243,7 @@ to the original source.</p>
       
       <!-- slide source: presentation.rst -->
       <div class="slide-wrapper">
-        <div class="slide slide-20">
+        <div class="slide slide-19">
           <div class="inner">
             
             <header><h1>Astroid nodes</h1></header>
@@ -2283,7 +2286,7 @@ to the original source.</p>
             </aside>
             
             <aside class="page_number">
-              20/46
+              19/45
             </aside>
           </footer>
         </div>
@@ -2291,7 +2294,7 @@ to the original source.</p>
       
       <!-- slide source: presentation.rst -->
       <div class="slide-wrapper">
-        <div class="slide slide-21">
+        <div class="slide slide-20">
           <div class="inner">
             
             <header><h1>Inference</h1></header>
@@ -2300,8 +2303,6 @@ to the original source.</p>
             <section><ul class="simple">
 <li>the critical ability that astroid nodes have is to do <em>inference</em></li>
 <li>inferring is the act of resolving what a node really is</li>
-<li>similar with type inference, but we are more interested in what a node
-really represents, rather than its type value</li>
 <li>each node type provides its own inference rules, according to Python's semantics</li>
 <li>the inference also does partial abstract interpretation<ul>
 <li>we evaluate what the side effect of a statement will actually be</li>
@@ -2314,6 +2315,11 @@ really represents, rather than its type value</li>
             <header><h1>Presenter Notes</h1></header>
             <section>
             
+              <ul class="simple">
+<li>similar with type inference, but we are more interested in what a node
+really represents, rather than its type value</li>
+</ul>
+            
             </section>
           </div>
           <footer>
@@ -2323,7 +2329,7 @@ really represents, rather than its type value</li>
             </aside>
             
             <aside class="page_number">
-              21/46
+              20/45
             </aside>
           </footer>
         </div>
@@ -2331,7 +2337,7 @@ really represents, rather than its type value</li>
       
       <!-- slide source: presentation.rst -->
       <div class="slide-wrapper">
-        <div class="slide slide-22">
+        <div class="slide slide-21">
           <div class="inner">
             
             <header><h1>Inference example #1</h1></header>
@@ -2366,7 +2372,7 @@ really represents, rather than its type value</li>
             </aside>
             
             <aside class="page_number">
-              22/46
+              21/45
             </aside>
           </footer>
         </div>
@@ -2374,7 +2380,7 @@ really represents, rather than its type value</li>
       
       <!-- slide source: presentation.rst -->
       <div class="slide-wrapper">
-        <div class="slide slide-23">
+        <div class="slide slide-22">
           <div class="inner">
             
             <header><h1>Inference example #2</h1></header>
@@ -2403,6 +2409,12 @@ really represents, rather than its type value</li>
             <header><h1>Presenter Notes</h1></header>
             <section>
             
+              <ul class="simple">
+<li>LHS supertype + RHS subtype</li>
+<li>rhs.__radd__ first</li>
+<li>lhs.__add__ second</li>
+</ul>
+            
             </section>
           </div>
           <footer>
@@ -2412,7 +2424,7 @@ really represents, rather than its type value</li>
             </aside>
             
             <aside class="page_number">
-              23/46
+              22/45
             </aside>
           </footer>
         </div>
@@ -2420,7 +2432,7 @@ really represents, rather than its type value</li>
       
       <!-- slide source: presentation.rst -->
       <div class="slide-wrapper">
-        <div class="slide slide-24">
+        <div class="slide slide-23">
           <div class="inner">
             
             <header><h1>Node transforms</h1></header>
@@ -2447,7 +2459,7 @@ with the result from a transform function</li>
             </aside>
             
             <aside class="page_number">
-              24/46
+              23/45
             </aside>
           </footer>
         </div>
@@ -2455,7 +2467,7 @@ with the result from a transform function</li>
       
       <!-- slide source: presentation.rst -->
       <div class="slide-wrapper">
-        <div class="slide slide-25">
+        <div class="slide slide-24">
           <div class="inner">
             
             <header><h1>Node transforms</h1></header>
@@ -2491,7 +2503,7 @@ returns the same node modified or a completely new node</p>
             </aside>
             
             <aside class="page_number">
-              25/46
+              24/45
             </aside>
           </footer>
         </div>
@@ -2499,7 +2511,7 @@ returns the same node modified or a completely new node</p>
       
       <!-- slide source: presentation.rst -->
       <div class="slide-wrapper">
-        <div class="slide slide-26">
+        <div class="slide slide-25">
           <div class="inner">
             
             <header><h1>Inference custom rules</h1></header>
@@ -2533,7 +2545,7 @@ returns the same node modified or a completely new node</p>
             </aside>
             
             <aside class="page_number">
-              26/46
+              25/45
             </aside>
           </footer>
         </div>
@@ -2541,7 +2553,7 @@ returns the same node modified or a completely new node</p>
       
       <!-- slide source: presentation.rst -->
       <div class="slide-wrapper">
-        <div class="slide slide-27">
+        <div class="slide slide-26">
           <div class="inner">
             
             <header><h1>Astroid capabilities</h1></header>
@@ -2573,7 +2585,7 @@ returns the same node modified or a completely new node</p>
             </aside>
             
             <aside class="page_number">
-              27/46
+              26/45
             </aside>
           </footer>
         </div>
@@ -2581,7 +2593,7 @@ returns the same node modified or a completely new node</p>
       
       <!-- slide source: presentation.rst -->
       <div class="slide-wrapper">
-        <div class="slide slide-28">
+        <div class="slide slide-27">
           <div class="inner">
             
             <header><h1>Astroid capabilities</h1></header>
@@ -2626,6 +2638,10 @@ returns the same node modified or a completely new node</p>
             <header><h1>Presenter Notes</h1></header>
             <section>
             
+              <ul class="simple">
+<li>take a couple of moments to find the bugs from this code</li>
+</ul>
+            
             </section>
           </div>
           <footer>
@@ -2635,7 +2651,7 @@ returns the same node modified or a completely new node</p>
             </aside>
             
             <aside class="page_number">
-              28/46
+              27/45
             </aside>
           </footer>
         </div>
@@ -2643,7 +2659,7 @@ returns the same node modified or a completely new node</p>
       
       <!-- slide source: presentation.rst -->
       <div class="slide-wrapper">
-        <div class="slide slide-29">
+        <div class="slide slide-28">
           <div class="inner">
             
             <header><h1>Astroid capabilities</h1></header>
@@ -2675,7 +2691,7 @@ from the previous code</p>
             </aside>
             
             <aside class="page_number">
-              29/46
+              28/45
             </aside>
           </footer>
         </div>
@@ -2683,7 +2699,7 @@ from the previous code</p>
       
       <!-- slide source: presentation.rst -->
       <div class="slide-wrapper">
-        <div class="slide slide-30">
+        <div class="slide slide-29">
           <div class="inner">
             
             <header><h1>Astroid capabilities</h1></header>
@@ -2711,6 +2727,11 @@ from the previous code</p>
             <header><h1>Presenter Notes</h1></header>
             <section>
             
+              <ul class="simple">
+<li>a more complex example: list indexing, hasattr, callable, getattr</li>
+<li>boolean operators, context managers</li>
+</ul>
+            
             </section>
           </div>
           <footer>
@@ -2720,7 +2741,7 @@ from the previous code</p>
             </aside>
             
             <aside class="page_number">
-              30/46
+              29/45
             </aside>
           </footer>
         </div>
@@ -2728,7 +2749,7 @@ from the previous code</p>
       
       <!-- slide source: presentation.rst -->
       <div class="slide-wrapper">
-        <div class="slide slide-31">
+        <div class="slide slide-30">
           <div class="inner">
             
             <header><h1>Pylint - patterns over AST nodes</h1></header>
@@ -2764,7 +2785,7 @@ from the previous code</p>
             </aside>
             
             <aside class="page_number">
-              31/46
+              30/45
             </aside>
           </footer>
         </div>
@@ -2772,7 +2793,7 @@ from the previous code</p>
       
       <!-- slide source: presentation.rst -->
       <div class="slide-wrapper">
-        <div class="slide slide-32">
+        <div class="slide slide-31">
           <div class="inner">
             
             <header><h1>Pylint - visitor pattern example</h1></header>
@@ -2802,7 +2823,7 @@ as argument</li>
             </aside>
             
             <aside class="page_number">
-              32/46
+              31/45
             </aside>
           </footer>
         </div>
@@ -2810,7 +2831,7 @@ as argument</li>
       
       <!-- slide source: presentation.rst -->
       <div class="slide-wrapper">
-        <div class="slide slide-33">
+        <div class="slide slide-32">
           <div class="inner">
             
             <header><h1>Pylint - abstract interpretation</h1></header>
@@ -2849,7 +2870,7 @@ no way to reason if the current instance has the attribute from line 5</p>
             </aside>
             
             <aside class="page_number">
-              33/46
+              32/45
             </aside>
           </footer>
         </div>
@@ -2857,7 +2878,7 @@ no way to reason if the current instance has the attribute from line 5</p>
       
       <!-- slide source: presentation.rst -->
       <div class="slide-wrapper">
-        <div class="slide slide-34">
+        <div class="slide slide-33">
           <div class="inner">
             
             <header><h1>Pylint - checkers</h1></header>
@@ -2888,7 +2909,7 @@ no way to reason if the current instance has the attribute from line 5</p>
             </aside>
             
             <aside class="page_number">
-              34/46
+              33/45
             </aside>
           </footer>
         </div>
@@ -2896,7 +2917,7 @@ no way to reason if the current instance has the attribute from line 5</p>
       
       <!-- slide source: presentation.rst -->
       <div class="slide-wrapper">
-        <div class="slide slide-35">
+        <div class="slide slide-34">
           <div class="inner">
             
             <header><h1>Pylint</h1></header>
@@ -2930,7 +2951,7 @@ pylint-flask, pylint-django, pylint-celery, pylint-fields</p>
             </aside>
             
             <aside class="page_number">
-              35/46
+              34/45
             </aside>
           </footer>
         </div>
@@ -2938,7 +2959,7 @@ pylint-flask, pylint-django, pylint-celery, pylint-fields</p>
       
       <!-- slide source: presentation.rst -->
       <div class="slide-wrapper">
-        <div class="slide slide-36">
+        <div class="slide slide-35">
           <div class="inner">
             
             <header><h1>Pylint - extra features</h1></header>
@@ -2975,7 +2996,7 @@ pylint-flask, pylint-django, pylint-celery, pylint-fields</p>
             </aside>
             
             <aside class="page_number">
-              36/46
+              35/45
             </aside>
           </footer>
         </div>
@@ -2983,7 +3004,7 @@ pylint-flask, pylint-django, pylint-celery, pylint-fields</p>
       
       <!-- slide source: presentation.rst -->
       <div class="slide-wrapper">
-        <div class="slide slide-37">
+        <div class="slide slide-36">
           <div class="inner">
             
             <header><h1>Pylint - Python 3 porting checker</h1></header>
@@ -3015,7 +3036,7 @@ pylint-flask, pylint-django, pylint-celery, pylint-fields</p>
             </aside>
             
             <aside class="page_number">
-              37/46
+              36/45
             </aside>
           </footer>
         </div>
@@ -3023,7 +3044,7 @@ pylint-flask, pylint-django, pylint-celery, pylint-fields</p>
       
       <!-- slide source: presentation.rst -->
       <div class="slide-wrapper">
-        <div class="slide slide-38">
+        <div class="slide slide-37">
           <div class="inner">
             
             <header><h1>Pylint - Python 3 porting checker</h1></header>
@@ -3061,7 +3082,7 @@ W: 10,36: basestring built-in referenced
             </aside>
             
             <aside class="page_number">
-              38/46
+              37/45
             </aside>
           </footer>
         </div>
@@ -3069,7 +3090,7 @@ W: 10,36: basestring built-in referenced
       
       <!-- slide source: presentation.rst -->
       <div class="slide-wrapper">
-        <div class="slide slide-39">
+        <div class="slide slide-38">
           <div class="inner">
             
             <header><h1>Similar tools: pyflakes</h1></header>
@@ -3111,7 +3132,7 @@ style issues</p>
             </aside>
             
             <aside class="page_number">
-              39/46
+              38/45
             </aside>
           </footer>
         </div>
@@ -3119,7 +3140,7 @@ style issues</p>
       
       <!-- slide source: presentation.rst -->
       <div class="slide-wrapper">
-        <div class="slide slide-40">
+        <div class="slide slide-39">
           <div class="inner">
             
             <header><h1>Similar tools: Pychecker</h1></header>
@@ -3154,7 +3175,7 @@ style issues</p>
             </aside>
             
             <aside class="page_number">
-              40/46
+              39/45
             </aside>
           </footer>
         </div>
@@ -3162,7 +3183,7 @@ style issues</p>
       
       <!-- slide source: presentation.rst -->
       <div class="slide-wrapper">
-        <div class="slide slide-41">
+        <div class="slide slide-40">
           <div class="inner">
             
             <header><h1>Similar tools: jedi and mypy</h1></header>
@@ -3201,7 +3222,7 @@ Guido loves it, PEP 484 started from here. Still work in progress.</p>
             </aside>
             
             <aside class="page_number">
-              41/46
+              40/45
             </aside>
           </footer>
         </div>
@@ -3209,7 +3230,7 @@ Guido loves it, PEP 484 started from here. Still work in progress.</p>
       
       <!-- slide source: presentation.rst -->
       <div class="slide-wrapper">
-        <div class="slide slide-42">
+        <div class="slide slide-41">
           <div class="inner">
             
             <header><h1>Static analysis shortcomings</h1></header>
@@ -3244,7 +3265,7 @@ Guido loves it, PEP 484 started from here. Still work in progress.</p>
             </aside>
             
             <aside class="page_number">
-              42/46
+              41/45
             </aside>
           </footer>
         </div>
@@ -3252,7 +3273,7 @@ Guido loves it, PEP 484 started from here. Still work in progress.</p>
       
       <!-- slide source: presentation.rst -->
       <div class="slide-wrapper">
-        <div class="slide slide-43">
+        <div class="slide slide-42">
           <div class="inner">
             
             <header><h1>Static analysis shortcomings</h1></header>
@@ -3297,7 +3318,7 @@ Guido loves it, PEP 484 started from here. Still work in progress.</p>
             </aside>
             
             <aside class="page_number">
-              43/46
+              42/45
             </aside>
           </footer>
         </div>
@@ -3305,7 +3326,7 @@ Guido loves it, PEP 484 started from here. Still work in progress.</p>
       
       <!-- slide source: presentation.rst -->
       <div class="slide-wrapper">
-        <div class="slide slide-44">
+        <div class="slide slide-43">
           <div class="inner">
             
             <header><h1>Future Pylint</h1></header>
@@ -3334,7 +3355,7 @@ Guido loves it, PEP 484 started from here. Still work in progress.</p>
             </aside>
             
             <aside class="page_number">
-              44/46
+              43/45
             </aside>
           </footer>
         </div>
@@ -3342,7 +3363,7 @@ Guido loves it, PEP 484 started from here. Still work in progress.</p>
       
       <!-- slide source: presentation.rst -->
       <div class="slide-wrapper">
-        <div class="slide slide-45">
+        <div class="slide slide-44">
           <div class="inner">
             
             <header><h1>But, but.. how do I stop worrying and start loving the bugs?</h1></header>
@@ -3368,7 +3389,7 @@ Guido loves it, PEP 484 started from here. Still work in progress.</p>
             </aside>
             
             <aside class="page_number">
-              45/46
+              44/45
             </aside>
           </footer>
         </div>
@@ -3376,7 +3397,7 @@ Guido loves it, PEP 484 started from here. Still work in progress.</p>
       
       <!-- slide source: presentation.rst -->
       <div class="slide-wrapper">
-        <div class="slide slide-46">
+        <div class="slide slide-45">
           <div class="inner">
             
             
@@ -3396,7 +3417,7 @@ Guido loves it, PEP 484 started from here. Still work in progress.</p>
             </aside>
             
             <aside class="page_number">
-              46/46
+              45/45
             </aside>
           </footer>
         </div>
@@ -3489,7 +3510,7 @@ Guido loves it, PEP 484 started from here. Still work in progress.</p>
       
       
       <tr id="toc-row-14">
-        <th><a href="#slide14">Astroid nodes</a></th>
+        <th><a href="#slide14">How pylint works?</a></th>
         <td><a href="#slide14">14</a></td>
       </tr>
       
@@ -3525,25 +3546,25 @@ Guido loves it, PEP 484 started from here. Still work in progress.</p>
       
       
       <tr id="toc-row-20">
-        <th><a href="#slide20">Astroid nodes</a></th>
+        <th><a href="#slide20">Inference</a></th>
         <td><a href="#slide20">20</a></td>
       </tr>
       
       
       <tr id="toc-row-21">
-        <th><a href="#slide21">Inference</a></th>
+        <th><a href="#slide21">Inference example #1</a></th>
         <td><a href="#slide21">21</a></td>
       </tr>
       
       
       <tr id="toc-row-22">
-        <th><a href="#slide22">Inference example #1</a></th>
+        <th><a href="#slide22">Inference example #2</a></th>
         <td><a href="#slide22">22</a></td>
       </tr>
       
       
       <tr id="toc-row-23">
-        <th><a href="#slide23">Inference example #2</a></th>
+        <th><a href="#slide23">Node transforms</a></th>
         <td><a href="#slide23">23</a></td>
       </tr>
       
@@ -3555,13 +3576,13 @@ Guido loves it, PEP 484 started from here. Still work in progress.</p>
       
       
       <tr id="toc-row-25">
-        <th><a href="#slide25">Node transforms</a></th>
+        <th><a href="#slide25">Inference custom rules</a></th>
         <td><a href="#slide25">25</a></td>
       </tr>
       
       
       <tr id="toc-row-26">
-        <th><a href="#slide26">Inference custom rules</a></th>
+        <th><a href="#slide26">Astroid capabilities</a></th>
         <td><a href="#slide26">26</a></td>
       </tr>
       
@@ -3585,43 +3606,43 @@ Guido loves it, PEP 484 started from here. Still work in progress.</p>
       
       
       <tr id="toc-row-30">
-        <th><a href="#slide30">Astroid capabilities</a></th>
+        <th><a href="#slide30">Pylint - patterns over AST nodes</a></th>
         <td><a href="#slide30">30</a></td>
       </tr>
       
       
       <tr id="toc-row-31">
-        <th><a href="#slide31">Pylint - patterns over AST nodes</a></th>
+        <th><a href="#slide31">Pylint - visitor pattern example</a></th>
         <td><a href="#slide31">31</a></td>
       </tr>
       
       
       <tr id="toc-row-32">
-        <th><a href="#slide32">Pylint - visitor pattern example</a></th>
+        <th><a href="#slide32">Pylint - abstract interpretation</a></th>
         <td><a href="#slide32">32</a></td>
       </tr>
       
       
       <tr id="toc-row-33">
-        <th><a href="#slide33">Pylint - abstract interpretation</a></th>
+        <th><a href="#slide33">Pylint - checkers</a></th>
         <td><a href="#slide33">33</a></td>
       </tr>
       
       
       <tr id="toc-row-34">
-        <th><a href="#slide34">Pylint - checkers</a></th>
+        <th><a href="#slide34">Pylint</a></th>
         <td><a href="#slide34">34</a></td>
       </tr>
       
       
       <tr id="toc-row-35">
-        <th><a href="#slide35">Pylint</a></th>
+        <th><a href="#slide35">Pylint - extra features</a></th>
         <td><a href="#slide35">35</a></td>
       </tr>
       
       
       <tr id="toc-row-36">
-        <th><a href="#slide36">Pylint - extra features</a></th>
+        <th><a href="#slide36">Pylint - Python 3 porting checker</a></th>
         <td><a href="#slide36">36</a></td>
       </tr>
       
@@ -3633,25 +3654,25 @@ Guido loves it, PEP 484 started from here. Still work in progress.</p>
       
       
       <tr id="toc-row-38">
-        <th><a href="#slide38">Pylint - Python 3 porting checker</a></th>
+        <th><a href="#slide38">Similar tools: pyflakes</a></th>
         <td><a href="#slide38">38</a></td>
       </tr>
       
       
       <tr id="toc-row-39">
-        <th><a href="#slide39">Similar tools: pyflakes</a></th>
+        <th><a href="#slide39">Similar tools: Pychecker</a></th>
         <td><a href="#slide39">39</a></td>
       </tr>
       
       
       <tr id="toc-row-40">
-        <th><a href="#slide40">Similar tools: Pychecker</a></th>
+        <th><a href="#slide40">Similar tools: jedi and mypy</a></th>
         <td><a href="#slide40">40</a></td>
       </tr>
       
       
       <tr id="toc-row-41">
-        <th><a href="#slide41">Similar tools: jedi and mypy</a></th>
+        <th><a href="#slide41">Static analysis shortcomings</a></th>
         <td><a href="#slide41">41</a></td>
       </tr>
       
@@ -3663,26 +3684,20 @@ Guido loves it, PEP 484 started from here. Still work in progress.</p>
       
       
       <tr id="toc-row-43">
-        <th><a href="#slide43">Static analysis shortcomings</a></th>
+        <th><a href="#slide43">Future Pylint</a></th>
         <td><a href="#slide43">43</a></td>
       </tr>
       
       
       <tr id="toc-row-44">
-        <th><a href="#slide44">Future Pylint</a></th>
+        <th><a href="#slide44">But, but.. how do I stop worrying and start loving the bugs?</a></th>
         <td><a href="#slide44">44</a></td>
       </tr>
       
       
       <tr id="toc-row-45">
-        <th><a href="#slide45">But, but.. how do I stop worrying and start loving the bugs?</a></th>
+        <th><a href="#slide45">-</a></th>
         <td><a href="#slide45">45</a></td>
-      </tr>
-      
-      
-      <tr id="toc-row-46">
-        <th><a href="#slide46">-</a></th>
-        <td><a href="#slide46">46</a></td>
       </tr>
       
       

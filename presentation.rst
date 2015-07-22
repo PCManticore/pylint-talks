@@ -22,13 +22,7 @@
         `bitbucket.org/pcmanticore <http://bitbucket.org/pcmanticore>`_
 
         `@PCManticore <http://twitter.com/PCManticore>`_
-        
 
-Presenter Notes
----------------
-
-* Widespreaded
-* History, detour through static analysis
         
 
 -----
@@ -48,6 +42,14 @@ What is this *lint* you're talking about?
   
   * a type checker and structural analyzer
 
+
+Presenter Notes
+---------------
+
+* Widespreaded
+* More than a linter
+* Over 180 verifications
+
 -------
 
 Static analysis
@@ -66,6 +68,13 @@ Static analysis
 * not equivalent to a review
 
 
+Presenter Notes
+---------------
+
+* static program analysis is the analysis of computer software
+  that is performed without actually executing programs,
+  having the purpose of finding bugs and other issues in our code.
+
 ----------
 
 
@@ -82,9 +91,9 @@ Pylinting ugly code goes like this
       if not params:
          raise ValueError('empty command list')
          # I didn't intended to put this here.
-         for i in params:
+         for foo in params:
             # Oups, forgot to call it
-            i.execute
+            foo.execute
 
 .. code-block:: sh
 
@@ -94,6 +103,15 @@ Pylinting ugly code goes like this
     W: 10: Statement seems to have no effect
     W:  4: Unused variable 'executed'
     W:  1: Unused import os
+
+Presenter Notes
+---------------
+
+* examples of unreachable code
+
+* statements without effects (unintended)
+
+* unused variables and imports
     
 ----
 
@@ -104,7 +122,7 @@ Pylint can detect real bugs too
 
 * accessing undefined members
 
-* calling non-callable objects
+* calling objects which aren't callable
 
    .. sourcecode:: python
 
@@ -119,6 +137,15 @@ Pylint can detect real bugs too
       E:  2,20: Undefined variable 'outfile' (undefined-variable)
       E:  2,42: Module 'zipfile' has no 'DEFLATED' member (no-member)
       E:  3, 1: f is not callable (not-callable)
+
+Presenter Notes
+---------------
+
+* other real bugs: undefined variables
+
+* undefined members
+
+* calling something which is not callable
 
 -----
 
@@ -143,6 +170,11 @@ Pylint can detect real bugs too
       $ pylint a.py
 
       E: The special method '__exit__' expects 3 params, 0 was given
+
+Presenter Notes
+---------------
+
+* special methods analyzer: dunder exit requires 3 parameters
    
 -----
 
@@ -167,6 +199,13 @@ Pylint can detect real bugs too
 
        W:  5: Using a conditional statement with a constant value
 
+Presenter Notes
+---------------
+
+* constant checks, might hide bugs
+
+* func was intended to be called here
+
 ------
 
 Pylint can detect real bugs too
@@ -179,10 +218,20 @@ Pylint can detect real bugs too
    .. sourcecode:: python
 
        def bad_case2():
-           return [(lambda: i) for i in range(10)]
+           return [(lambda: var) for var in range(10)]
 
        for callable in bad_case2():
            print(callable())
+
+
+Presenter Notes
+---------------
+
+
+* take a couple of moments to detect what's wrong
+  with this code
+
+* take a sip of water
 
 
 
@@ -202,12 +251,12 @@ Pylint can detect real bugs too
       ...
 
       $ pylint a.py
-      W:  2,20: Cell variable i defined in loop
+      W:  2,20: Cell variable 'var' defined in loop
 
-* the previous code created a closure and i was looked up
+* the previous code created a closure and **var** was looked up
   in the parent's scope when executed.
 
-* **i** in the parent's scope after the loop was 9.
+* **var** in the parent's scope after the loop was 9.
 
 
 ------
@@ -227,6 +276,18 @@ Pylint can detect real bugs too
    * astroid: 1604 commits, 14045 lines of code
 
 * GPL licensed :-(
+
+
+Presenter Notes
+---------------
+
+* oldest, still maintained
+
+* community driven
+
+* the project has little involvement from Logilab
+
+* GPL was really popular in 2003  
 
 ----
 
@@ -257,7 +318,7 @@ How pylint works?
 
 * follows the general pattern of building a linter: uses ASTs
 
-* ASTs - abstract syntax trees - tree representation of the abstract sintactic structure
+* ASTs - abstract syntax trees - tree representation of the sintactic structure
   of source code
 
 * uses the **ast** module internally
@@ -273,6 +334,21 @@ How pylint works?
    
 ------
 
+How pylint works?
+=================
+
+.. class:: center
+
+   .. image:: ast.svg
+      :width: 650
+      :height: 650
+
+.. rubric:: Footnotes
+
+.. [#f1] http://hackflow.com/blog/2015/03/29/metaprogramming-beyond-decency/
+
+
+-----
 
 How pylint works?
 =================
@@ -294,22 +370,6 @@ How pylint works?
 			
 ------
 
-Astroid nodes
-=============
-
-* the nodes are almost equivalent with the one from the ast module
-
-  * `CallFunc` - function call
-
-  * `Function` - function definition
-
-  * `Class` - a class definition
-
-  * `Arguments` - a function's arguments
-
-  * etc
-
-------
 
 Astroid nodes
 =============
@@ -321,9 +381,14 @@ Astroid nodes
     .. sourcecode:: python
 
        >>> from astroid import extract_node
-       >>> node = extract_node('''f = 42''')
+       >>> node = extract_node('''
+       def func():
+           f = 42 #@
+       ''')
        >>> node
        <Assign() l.2 [] at 0x2c49dd0>
+       >>> node.parent
+       <Function() 1.2 [] at 0x2c49d80>
        >>> node.parent.parent
        <Module() l.0 [] at 0x2c49d90>
 
@@ -368,29 +433,15 @@ Astroid nodes
        >>> node = extract_node("[__(foo) for foo in range(10)]")
        >>> node.scope()
        <ListComp() l.2 [] at 0x795684240>
-   
-----
-
-Astroid nodes
-=============
 
 
-* you can get a node's locals
+Presenter Notes
+---------------
 
-    .. sourcecode:: python
-
-       >>> module.locals
-       {'f': [<AssName(f) l.2 [] at 0xd1b6191748>]}
-
-* or a node's string representations. This roundtrips almost completely
-  to the original source.
-
-    .. sourcecode:: python
-
-       >>> module.as_string()
-       'f = 42'
+* On Python 3 the scope of the `foo` is the list comprehension itself
 
 ----
+
 
 Astroid nodes
 =============
@@ -448,14 +499,17 @@ Inference
 
 * inferring is the act of resolving what a node really is
 
-* similar with type inference, but we are more interested in what a node
-  really represents, rather than its type value
-
 * each node type provides its own inference rules, according to Python's semantics
 
 * the inference also does partial abstract interpretation
 
   * we evaluate what the side effect of a statement will actually be
+
+Presenter Notes
+---------------
+
+* similar with type inference, but we are more interested in what a node
+  really represents, rather than its type value
 
 ----
 
@@ -502,6 +556,13 @@ Inference example #2
   >>> inferred = next(n.infer())
   >>> inferred.value
   45.0
+
+Presenter Notes
+---------------
+
+* LHS supertype + RHS subtype
+* rhs.__radd__ first
+* lhs.__add__ second
 
 -------
 
@@ -598,6 +659,11 @@ Astroid capabilities
           super(E, self).foo()
           super(E, self).spa
 
+Presenter Notes
+---------------
+
+* take a couple of moments to find the bugs from this code
+
 ----
 
 Astroid capabilities
@@ -636,6 +702,14 @@ Astroid capabilities
 
    $ pylint a.py ...
    E: Too many positional arguments for method call
+
+
+Presenter Notes
+---------------
+
+* a more complex example: list indexing, hasattr, callable, getattr
+
+* boolean operators, context managers
 
 ----- 
 
